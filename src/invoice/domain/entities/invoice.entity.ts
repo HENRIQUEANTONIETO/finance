@@ -1,22 +1,14 @@
-import { randomUUID } from 'node:crypto'
+import { Entity } from '@/shared/domain/entities/entity'
 
-export class Invoice {
-  public readonly id: string
-  public readonly description: string
-  public readonly category: string
-  public readonly type: string
-  public readonly amount: number
-
-  constructor(
-    description: string,
-    category: string,
-    type: string,
-    amount: number,
-  ) {
-    this.id = randomUUID()
-    this.description = description
-    this.category = category
-    this.type = type
-    this.amount = amount
+export type InvoiceProps = {
+  description: string
+  category: string
+  type: string
+  amount: number
+  date: Date
+}
+export class Invoice extends Entity<InvoiceProps> {
+  constructor(public readonly props: InvoiceProps) {
+    super(props)
   }
 }
