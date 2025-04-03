@@ -8,7 +8,7 @@ export type InvoiceProps = {
   date: Date
 }
 export class Invoice extends Entity<InvoiceProps> {
-  constructor(props: InvoiceProps) {
+  constructor(public readonly props: InvoiceProps) {
     super(props)
   }
 
