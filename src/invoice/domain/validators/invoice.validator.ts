@@ -6,6 +6,7 @@ import {
   MaxLength,
 } from 'class-validator'
 import { InvoiceProps } from '../entities/invoice.entity'
+import { ClassValidatorFields } from '@/shared/domain/validators/class-validator-fields'
 
 export class InvoiceRules {
   @MaxLength(255)
@@ -33,5 +34,17 @@ export class InvoiceRules {
 
   constructor({ amount, category, date, description, type }: InvoiceProps) {
     Object.assign(this, { amount, category, date, description, type })
+  }
+}
+
+export class InvoiceValidator extends ClassValidatorFields<InvoiceRules> {
+  validate(data: InvoiceRules): boolean {
+    return super.validate(new InvoiceRules(data))
+  }
+}
+
+export class InvoiceValidatorFactory {
+  static create(): InvoiceValidator {
+    return new InvoiceValidator()
   }
 }
