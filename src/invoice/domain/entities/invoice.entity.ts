@@ -1,7 +1,7 @@
 import { Entity } from '@/shared/domain/entities/entity'
 
 export type InvoiceProps = {
-  description: string
+  title: string
   category: string
   type: string
   amount: number
@@ -12,12 +12,12 @@ export class Invoice extends Entity<InvoiceProps> {
     super(props)
   }
 
-  get description(): string {
-    return this.props.description
+  get title(): string {
+    return this.props.title
   }
 
-  set description(value: string) {
-    this.props.description = value
+  set title(value: string) {
+    this.props.title = value
   }
 
   get category(): string {

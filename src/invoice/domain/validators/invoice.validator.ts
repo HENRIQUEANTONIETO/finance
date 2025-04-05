@@ -12,7 +12,7 @@ export class InvoiceRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
-  description: string
+  title: string
 
   @MaxLength(255)
   @IsString()
@@ -32,8 +32,8 @@ export class InvoiceRules {
   @IsNotEmpty()
   date: Date
 
-  constructor({ amount, category, date, description, type }: InvoiceProps) {
-    Object.assign(this, { amount, category, date, description, type })
+  constructor({ amount, category, date, title, type }: InvoiceProps) {
+    Object.assign(this, { amount, category, date, title, type })
   }
 }
 
