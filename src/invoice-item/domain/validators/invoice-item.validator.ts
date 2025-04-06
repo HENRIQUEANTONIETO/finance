@@ -5,10 +5,10 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator'
-import { InvoiceProps } from '../entities/invoice.entity'
+import { InvoiceItemProps } from '../entities/invoice-item.entity'
 import { ClassValidatorFields } from '@/shared/domain/validators/class-validator-fields'
 
-export class InvoiceRules {
+export class InvoiceItemRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
@@ -32,19 +32,19 @@ export class InvoiceRules {
   @IsNotEmpty()
   date: Date
 
-  constructor({ amount, category, date, title, type }: InvoiceProps) {
+  constructor({ amount, category, date, title, type }: InvoiceItemProps) {
     Object.assign(this, { amount, category, date, title, type })
   }
 }
 
-export class InvoiceValidator extends ClassValidatorFields<InvoiceRules> {
-  validate(data: InvoiceRules): boolean {
-    return super.validate(new InvoiceRules(data))
+export class InvoiceItemValidator extends ClassValidatorFields<InvoiceItemRules> {
+  validate(data: InvoiceItemRules): boolean {
+    return super.validate(new InvoiceItemRules(data))
   }
 }
 
-export class InvoiceValidatorFactory {
-  static create(): InvoiceValidator {
-    return new InvoiceValidator()
+export class InvoiceItemValidatorFactory {
+  static create(): InvoiceItemValidator {
+    return new InvoiceItemValidator()
   }
 }

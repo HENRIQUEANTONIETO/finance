@@ -1,14 +1,14 @@
 import { Entity } from '@/shared/domain/entities/entity'
 
-export type InvoiceProps = {
+export type InvoiceItemProps = {
   title: string
   category: string
   type: string
   amount: number
   date: Date
 }
-export class Invoice extends Entity<InvoiceProps> {
-  constructor(public readonly props: InvoiceProps) {
+export class InvoiceItem extends Entity<InvoiceItemProps> {
+  constructor(public readonly props: InvoiceItemProps) {
     super(props)
   }
 

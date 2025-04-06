@@ -1,8 +1,8 @@
-describe('Invoice integration tests', () => {
-  it('should create a list of invoice', () => {
-    const interInvoice = {
+describe('InvoiceItem integration tests', () => {
+  it('should create a list of invoiceItem', () => {
+    const interInvoiceItem = {
       modelId: 1,
-      invoice: [
+      invoiceItem: [
         {
           Data: '22/03/2025',
           Lançamento: 'Supermercado do Zé',
@@ -27,8 +27,8 @@ describe('Invoice integration tests', () => {
       ],
     }
 
-    // const invoiceModelRepository = new invoiceModelRepository()
-    // const model = invoiceModelRepository.find(interInvoice.modelId)
-    // model.invoice = interInvoice.invoice
+    // const invoiceItemModelRepository = new invoiceItemModelRepository()
+    // const model = invoiceItemModelRepository.find(interInvoiceItem.modelId)
+    // model.invoiceItem = interInvoiceItem.invoiceItem
   })
 })
