@@ -3,7 +3,7 @@ import { Entity } from '@/shared/domain/entities/entity'
 export type InvoiceItemProps = {
   title: string
   category: string
-  type: string
+  type?: string
   amount: number
   date: Date
 }

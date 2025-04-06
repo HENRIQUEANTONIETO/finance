@@ -6,6 +6,6 @@ export function InvoiceItemDataBuilder(): InvoiceItemProps {
     category: 'SERVICOS',
     type: 'Compra à vista',
     amount: 20.0,
-    date: new Date('25/03/2025'),
+    date: new Date(),
   }
 }

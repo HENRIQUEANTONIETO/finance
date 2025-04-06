@@ -2,6 +2,7 @@ import {
   IsDate,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator'
@@ -21,8 +22,8 @@ export class InvoiceItemRules {
 
   @MaxLength(255)
   @IsString()
-  @IsNotEmpty()
-  type: string
+  @IsOptional()
+  type?: string
 
   @IsNumber()
   @IsNotEmpty()
