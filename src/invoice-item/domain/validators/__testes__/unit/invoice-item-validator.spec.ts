@@ -36,4 +36,46 @@ describe('InvoiceItem validator unit test', () => {
       'title must be shorter than or equal to 255 characters',
     ])
   })
+
+  it('Invalidation cases for category field', () => {
+    let isValid = sut.validate({ ...props, category: '' })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.category).toStrictEqual(['category should not be empty'])
+
+    isValid = sut.validate({ ...props, category: null })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.category).toStrictEqual([
+      'category should not be empty',
+      'category must be a string',
+      'category must be shorter than or equal to 255 characters',
+    ])
+
+    isValid = sut.validate({ ...props, category: 10 as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.category).toStrictEqual([
+      'category must be a string',
+      'category must be shorter than or equal to 255 characters',
+    ])
+
+    isValid = sut.validate({ ...props, category: 'a'.repeat(256) })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.category).toStrictEqual([
+      'category must be shorter than or equal to 255 characters',
+    ])
+  })
+
+  it('Invalidation cases for type field', () => {
+    let isValid = sut.validate({ ...props, type: 10 as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.type).toStrictEqual([
+      'type must be a string',
+      'type must be shorter than or equal to 255 characters',
+    ])
+
+    isValid = sut.validate({ ...props, type: 'a'.repeat(256) })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.type).toStrictEqual([
+      'type must be shorter than or equal to 255 characters',
+    ])
+  })
 })
