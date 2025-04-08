@@ -78,4 +78,43 @@ describe('InvoiceItem validator unit test', () => {
       'type must be shorter than or equal to 255 characters',
     ])
   })
+
+  it('Invalidation cases for amount field', () => {
+    let isValid = sut.validate({ ...props, amount: '' as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.amount).toStrictEqual([
+      'amount should not be empty',
+      'amount must be a number conforming to the specified constraints',
+    ])
+
+    isValid = sut.validate({ ...props, amount: null })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.amount).toStrictEqual([
+      'amount should not be empty',
+      'amount must be a number conforming to the specified constraints',
+    ])
+  })
+  it('Invalidation cases for date field', () => {
+    let isValid = sut.validate({ ...props, date: '' as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.date).toStrictEqual([
+      'date should not be empty',
+      'date must be a Date instance',
+    ])
+
+    isValid = sut.validate({ ...props, date: 'data' as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.date).toStrictEqual(['date must be a Date instance'])
+
+    isValid = sut.validate({ ...props, date: null })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.date).toStrictEqual([
+      'date should not be empty',
+      'date must be a Date instance',
+    ])
+
+    isValid = sut.validate({ ...props, date: 10 as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.date).toStrictEqual(['date must be a Date instance'])
+  })
 })
