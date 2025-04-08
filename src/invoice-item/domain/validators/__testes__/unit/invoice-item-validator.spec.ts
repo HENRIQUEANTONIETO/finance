@@ -1,5 +1,6 @@
 import { InvoiceItemDataBuilder } from '@/invoice-item/domain/testing/helpers/invoice-item-data-builder'
 import {
+  InvoiceItemRules,
   InvoiceItemValidator,
   InvoiceItemValidatorFactory,
 } from '../../invoice-item.validator'
@@ -116,5 +117,20 @@ describe('InvoiceItem validator unit test', () => {
     isValid = sut.validate({ ...props, date: 10 as any })
     expect(isValid).toBeFalsy()
     expect(sut.errors.date).toStrictEqual(['date must be a Date instance'])
+  })
+
+  it('Validation cases for invoice-item', () => {
+    let isValid = sut.validate(props)
+    expect(isValid).toBeTruthy()
+    expect(sut.validatedData).toStrictEqual(new InvoiceItemRules(props))
+
+    isValid = sut.validate({ ...props, type: undefined })
+    expect(isValid).toBeTruthy()
+    expect(sut.validatedData).toStrictEqual(
+      new InvoiceItemRules({
+        ...props,
+        type: undefined,
+      }),
+    )
   })
 })
