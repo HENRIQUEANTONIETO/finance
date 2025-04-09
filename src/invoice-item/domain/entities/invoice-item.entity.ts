@@ -9,9 +9,9 @@ export type InvoiceItemProps = {
   amount: number
   date: Date
 }
-export class InvoiceItem extends Entity<InvoiceItemProps> {
+export class InvoiceItemEntity extends Entity<InvoiceItemProps> {
   constructor(public readonly props: InvoiceItemProps) {
-    InvoiceItem.validate(props)
+    InvoiceItemEntity.validate(props)
     super(props)
   }
 

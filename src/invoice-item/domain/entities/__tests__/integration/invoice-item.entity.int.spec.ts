@@ -1,4 +1,4 @@
-describe('InvoiceItem integration tests', () => {
+describe('InvoiceItemEntity integration tests', () => {
   it('should create a list of invoiceItem', () => {
     const interInvoiceItem = {
       modelId: 1,

@@ -7,7 +7,7 @@ import {
 
 const props = InvoiceItemDataBuilder()
 let sut: InvoiceItemValidator
-describe('InvoiceItem validator unit test', () => {
+describe('InvoiceItemEntity validator unit test', () => {
   beforeEach(() => {
     sut = InvoiceItemValidatorFactory.create()
   })
