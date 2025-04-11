@@ -1,34 +1,118 @@
-describe('InvoiceItemEntity integration tests', () => {
-  it('should create a list of invoiceItem', () => {
-    const interInvoiceItem = {
-      modelId: 1,
-      invoiceItem: [
-        {
-          Data: '22/03/2025',
-          Lançamento: 'Supermercado do Zé',
-          Categoria: 'SUPERMERCADO',
-          Tipo: 'Compra à vista',
-          Valor: 'R$ 130,84',
-        },
-        {
-          Data: '22/03/2025',
-          Lançamento: 'Posto Ipiranga',
-          Categoria: 'COMBUSTÍVEL',
-          Tipo: 'Compra à vista',
-          Valor: 'R$ 123,44',
-        },
-        {
-          Data: '12/03/2025',
-          Lançamento: 'Mercadolivre*vkonlin',
-          Categoria: 'COMPRAS',
-          Tipo: 'Parcela 3/3',
-          Valor: 'R$ 26,32',
-        },
-      ],
-    }
+import { InvoiceItemDataBuilder } from '@/invoice-item/domain/testing/helpers/invoice-item-data-builder'
+import { InvoiceItemEntity, InvoiceItemProps } from '../../invoice-item.entity'
+import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
-    // const invoiceItemModelRepository = new invoiceItemModelRepository()
-    // const model = invoiceItemModelRepository.find(interInvoiceItem.modelId)
-    // model.invoiceItem = interInvoiceItem.invoiceItem
+describe('InvoiceItemEntity integration tests', () => {
+  describe('Constructor method', () => {
+    it('Should return an error when the title is invalid', () => {
+      const invalidTitleValues = [null, '', 10, 'a'.repeat(256)]
+
+      for (const value of invalidTitleValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          title: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the category is invalid', () => {
+      const invalidCategoryValues = [null, '', 10, 'a'.repeat(256)]
+
+      for (const value of invalidCategoryValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          category: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the type is invalid', () => {
+      const invalidTypeValues = [10, 'a'.repeat(256)]
+
+      for (const value of invalidTypeValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          type: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the type is invalid', () => {
+      const invalidTypeValues = [10, 'a'.repeat(256)]
+
+      for (const value of invalidTypeValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          type: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the amount is invalid', () => {
+      const invalidAmountValues = [null, '', '10']
+
+      for (const value of invalidAmountValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          amount: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the amount is invalid', () => {
+      const invalidAmountValues = [null, '', '10']
+
+      for (const value of invalidAmountValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          amount: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should return an error when the date is invalid', () => {
+      const invalidDateValues = [null, '', 'date', 50]
+
+      for (const value of invalidDateValues) {
+        let props: InvoiceItemProps = {
+          ...InvoiceItemDataBuilder(),
+          date: value as any,
+        }
+
+        expect(() => new InvoiceItemEntity(props)).toThrow(
+          EntityValidationError,
+        )
+      }
+    })
+
+    it('Should create a valid Invoice Item', () => {
+      expect.assertions(0)
+      let props: InvoiceItemProps = InvoiceItemDataBuilder()
+      new InvoiceItemEntity(props)
+    })
   })
 })
