@@ -1,4 +1,4 @@
-import { InvoiceItemDataBuilder } from '@/invoice-item/domain/testing/helpers/invoice-item-data-builder'
+import { InvoiceItemDataBuilder } from '@/invoice/domain/testing/helpers/invoice-item-data-builder'
 import { InvoiceItemEntity, InvoiceItemProps } from '../../invoice-item.entity'
 import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 

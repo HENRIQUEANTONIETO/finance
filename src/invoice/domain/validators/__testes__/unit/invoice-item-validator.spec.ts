@@ -1,4 +1,4 @@
-import { InvoiceItemDataBuilder } from '@/invoice-item/domain/testing/helpers/invoice-item-data-builder'
+import { InvoiceItemDataBuilder } from '@/invoice/domain/testing/helpers/invoice-item-data-builder'
 import {
   InvoiceItemRules,
   InvoiceItemValidator,
