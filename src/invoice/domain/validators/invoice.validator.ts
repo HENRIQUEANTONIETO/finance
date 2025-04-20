@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsDate,
   IsInt,
@@ -11,13 +12,10 @@ import {
   ValidateNested,
 } from 'class-validator'
 import { Type } from 'class-transformer'
+
 import { InvoiceProps } from '../entities/invoice.entity'
 import { ClassValidatorFields } from '@/shared/domain/validators/class-validator-fields'
 import { InvoiceItemRules } from './invoice-item.validator'
-import {
-  InvoiceItemEntity,
-  InvoiceItemProps,
-} from '../entities/invoice-item.entity'
 
 export class InvoiceRules {
   @MaxLength(255)
@@ -39,23 +37,25 @@ export class InvoiceRules {
   importedAt?: Date
 
   @IsArray()
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => InvoiceItemRules)
-  items: InvoiceItemProps[]
+  items: InvoiceItemRules[]
 
-  constructor({ bank, items, month, year, importedAt }: InvoiceProps) {
-    Object.assign(this, { bank, month, year, importedAt, items })
+  constructor({ bank, month, year, importedAt, items }: InvoiceProps) {
+    this.bank = bank
+    this.month = month
+    this.year = year
+    this.importedAt = importedAt
+    this.items = items
   }
 }
-
 export class InvoiceValidator extends ClassValidatorFields<InvoiceRules> {
-  validate(data: InvoiceRules): boolean {
-    const items = data.items.map(item => new InvoiceItemEntity(item))
-    const dataToValidate = new InvoiceRules({ ...data, items })
+  validate(data: InvoiceProps): boolean {
+    const dataToValidate = new InvoiceRules(data)
     return super.validate(dataToValidate)
   }
 }
-
 export class InvoiceValidatorFactory {
   static create(): InvoiceValidator {
     return new InvoiceValidator()
