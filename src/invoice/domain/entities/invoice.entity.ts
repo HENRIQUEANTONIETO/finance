@@ -1,5 +1,7 @@
 import { Entity } from '@/shared/domain/entities/entity'
 import { InvoiceItemEntity } from './invoice-item.entity'
+import { InvoiceValidatorFactory } from '../validators/invoice.validator'
+import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
 export type InvoiceProps = {
   bank: string
@@ -10,7 +12,7 @@ export type InvoiceProps = {
 }
 export class InvoiceEntity extends Entity<InvoiceProps> {
   constructor(public readonly props: InvoiceProps) {
-    //InvoiceEntity.validate(props)
+    InvoiceEntity.validate(props)
     super(props)
     this.props.importedAt = this.props.importedAt ?? new Date()
   }
@@ -35,11 +37,11 @@ export class InvoiceEntity extends Entity<InvoiceProps> {
     return this.props.year
   }
 
-  // static validate(props: InvoiceItemProps): void {
-  //   const validator = InvoiceItemValidatorFactory.create()
-  //   const isValid = validator.validate(props)
-  //   if (!isValid) {
-  //     throw new EntityValidationError(validator.errors)
-  //   }
-  // }
+  static validate(props: InvoiceProps): void {
+    const validator = InvoiceValidatorFactory.create()
+    const isValid = validator.validate(props)
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors)
+    }
+  }
 }
