@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { InvoiceDataBuilder } from '@/invoice/domain/testing/helpers/invoice-data-builder'
 import {
+  InvoiceRules,
   InvoiceValidator,
   InvoiceValidatorFactory,
 } from '../../Invoice.validator'
@@ -143,18 +144,9 @@ describe('InvoiceEntity validator unit test', () => {
     ])
   })
 
-  // it('Validation cases for Invoice', () => {
-  //   let isValid = sut.validate(props)
-  //   expect(isValid).toBeTruthy()
-  //   expect(sut.validatedData).toStrictEqual(new InvoiceRules(props))
-
-  //   isValid = sut.validate({ ...props, type: undefined })
-  //   expect(isValid).toBeTruthy()
-  //   expect(sut.validatedData).toStrictEqual(
-  //     new InvoiceRules({
-  //       ...props,
-  //       type: undefined,
-  //     }),
-  //   )
-  // })
+  it('Validation cases for Invoice', () => {
+    let isValid = sut.validate(props)
+    expect(isValid).toBeTruthy()
+    expect(sut.validatedData).toStrictEqual(new InvoiceRules(props))
+  })
 })
