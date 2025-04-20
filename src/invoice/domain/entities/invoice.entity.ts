@@ -33,8 +33,18 @@ export class InvoiceEntity extends Entity<InvoiceProps> {
     return this.props.month
   }
 
+  set month(value: number) {
+    InvoiceEntity.validate({ ...this.props, month: value })
+    this.props.month = value
+  }
+
   get year(): number {
     return this.props.year
+  }
+
+  set year(value: number) {
+    InvoiceEntity.validate({ ...this.props, year: value })
+    this.props.year = value
   }
 
   static validate(props: InvoiceProps): void {
