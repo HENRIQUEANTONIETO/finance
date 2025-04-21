@@ -44,8 +44,30 @@ describe('InvoiceEntity unit tests', () => {
     expect(sut.importedAt).toBeInstanceOf(Date)
   })
 
-  it('should return getter of items field', () => {
+  it('should return list of invoice items', () => {
     expect(sut.items).toBeDefined()
     expect(typeof sut.items).toBe('object')
+  })
+
+  it('should return the total amount of all invoice items', () => {
+    const expectedTotal = sut.items.reduce((acc, item) => acc + item.amount, 0)
+    expect(sut.getTotal()).toBe(expectedTotal)
+  })
+
+  it('should return 0 if there are no items', () => {
+    const emptyInvoice = new InvoiceEntity({ ...invoiceProps, items: [] })
+    expect(emptyInvoice.getTotal()).toBe(0)
+  })
+
+  it('Should update month and validate', () => {
+    sut.month = 5
+    expect(sut.month).toBe(5)
+    expect(InvoiceEntity.validate).toHaveBeenCalled()
+  })
+
+  it('Should update year and validate', () => {
+    sut.year = 2026
+    expect(sut.year).toBe(2026)
+    expect(InvoiceEntity.validate).toHaveBeenCalled()
   })
 })

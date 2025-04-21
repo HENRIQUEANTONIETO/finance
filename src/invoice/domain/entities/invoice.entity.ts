@@ -47,6 +47,10 @@ export class InvoiceEntity extends Entity<InvoiceProps> {
     this.props.year = value
   }
 
+  getTotal() {
+    return this.items.reduce((acc, item) => acc + item.amount, 0)
+  }
+
   static validate(props: InvoiceProps): void {
     const validator = InvoiceValidatorFactory.create()
     const isValid = validator.validate(props)
