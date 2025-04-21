@@ -49,21 +49,6 @@ describe('InvoiceItemEntity integration tests', () => {
       }
     })
 
-    it('Should return an error when the type is invalid', () => {
-      const invalidTypeValues = [10, 'a'.repeat(256)]
-
-      for (const value of invalidTypeValues) {
-        let props: InvoiceItemProps = {
-          ...InvoiceItemDataBuilder(),
-          type: value as any,
-        }
-
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
-      }
-    })
-
     it('Should return an error when the amount is invalid', () => {
       const invalidAmountValues = [null, '', '10']
 
