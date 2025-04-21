@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { InvoiceDataBuilder } from '@/invoice/domain/testing/helpers/invoice-data-builder'
 import { InvoiceEntity, InvoiceProps } from '../../invoice.entity'
 
