@@ -72,7 +72,7 @@ describe('InvoiceBankEntity validator unit test', () => {
     expect(sut.validatedData).toStrictEqual(
       new InvoiceBankRules({
         ...props,
-        type: undefined,
+        typeField: undefined,
       }),
     )
   })
