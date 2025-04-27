@@ -1,5 +1,5 @@
 import { Entity } from '@/shared/domain/entities/entity'
-import { InvoiceBankValidatorFactory } from '../validators/invoice-item.validator'
+import { InvoiceBankValidatorFactory } from '../validators/invoice-bank.validator'
 import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
 export type InvoiceBankProps = {
