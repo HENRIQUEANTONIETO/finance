@@ -13,11 +13,12 @@ describe('InvoiceBankEntity unit tests', () => {
 
   it('should instance InvoiceBankEntity', () => {
     expect(InvoiceBankEntity.validate).toHaveBeenCalled()
-    expect(sut.props.titleField).toBe(InvoiceBankProps.titleField)
-    expect(sut.props.amountField).toBe(InvoiceBankProps.amountField)
-    expect(sut.props.categoryField).toBe(InvoiceBankProps.categoryField)
-    expect(sut.props.dateField).toBe(InvoiceBankProps.dateField)
-    expect(sut.props.typeField).toBe(InvoiceBankProps.typeField)
+    expect(sut.name).toBe(InvoiceBankProps.name)
+    expect(sut.titleField).toBe(InvoiceBankProps.titleField)
+    expect(sut.amountField).toBe(InvoiceBankProps.amountField)
+    expect(sut.categoryField).toBe(InvoiceBankProps.categoryField)
+    expect(sut.dateField).toBe(InvoiceBankProps.dateField)
+    expect(sut.typeField).toBe(InvoiceBankProps.typeField)
   })
 
   it('should return getter of titleField field', () => {

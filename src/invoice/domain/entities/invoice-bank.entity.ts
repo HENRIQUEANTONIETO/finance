@@ -17,6 +17,10 @@ export class InvoiceBankEntity extends Entity<InvoiceBankProps> {
     super(props)
   }
 
+  get name(): string {
+    return this.props.name
+  }
+
   get titleField(): string {
     return this.props.titleField
   }
