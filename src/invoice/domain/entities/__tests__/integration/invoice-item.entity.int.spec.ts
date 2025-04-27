@@ -13,9 +13,7 @@ describe('InvoiceItemEntity integration tests', () => {
           title: value as any,
         }
 
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
+        expect(() => new InvoiceItemEntity(props)).toThrow(EntityValidationError)
       }
     })
 
@@ -28,9 +26,7 @@ describe('InvoiceItemEntity integration tests', () => {
           category: value as any,
         }
 
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
+        expect(() => new InvoiceItemEntity(props)).toThrow(EntityValidationError)
       }
     })
 
@@ -43,9 +39,7 @@ describe('InvoiceItemEntity integration tests', () => {
           type: value as any,
         }
 
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
+        expect(() => new InvoiceItemEntity(props)).toThrow(EntityValidationError)
       }
     })
 
@@ -58,24 +52,7 @@ describe('InvoiceItemEntity integration tests', () => {
           amount: value as any,
         }
 
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
-      }
-    })
-
-    it('Should return an error when the amount is invalid', () => {
-      const invalidAmountValues = [null, '', '10']
-
-      for (const value of invalidAmountValues) {
-        let props: InvoiceItemProps = {
-          ...InvoiceItemDataBuilder(),
-          amount: value as any,
-        }
-
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
+        expect(() => new InvoiceItemEntity(props)).toThrow(EntityValidationError)
       }
     })
 
@@ -88,9 +65,7 @@ describe('InvoiceItemEntity integration tests', () => {
           date: value as any,
         }
 
-        expect(() => new InvoiceItemEntity(props)).toThrow(
-          EntityValidationError,
-        )
+        expect(() => new InvoiceItemEntity(props)).toThrow(EntityValidationError)
       }
     })
 
