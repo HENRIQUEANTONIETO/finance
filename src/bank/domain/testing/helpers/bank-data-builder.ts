@@ -1,6 +1,6 @@
-import { InvoiceBankProps } from '../../entities/invoice-bank.entity'
+import { BankProps } from '../../entities/bank.entity'
 
-export function InvoiceBankDataBuilder(): InvoiceBankProps {
+export function BankDataBuilder(): BankProps {
   return {
     name: 'Inter',
     titleField: 'Lançamento',

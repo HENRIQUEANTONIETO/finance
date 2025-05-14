@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'
-import { InvoiceBankProps } from '../entities/invoice-bank.entity'
+import { BankProps } from '../entities/bank.entity'
 import { ClassValidatorFields } from '@/shared/domain/validators/class-validator-fields'
 
-export class InvoiceBankRules {
+export class BankRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
@@ -40,7 +40,7 @@ export class InvoiceBankRules {
     dateField,
     titleField,
     typeField,
-  }: InvoiceBankProps) {
+  }: BankProps) {
     Object.assign(this, {
       name,
       amountField,
@@ -52,14 +52,14 @@ export class InvoiceBankRules {
   }
 }
 
-export class InvoiceBankValidator extends ClassValidatorFields<InvoiceBankRules> {
-  validate(data: InvoiceBankRules): boolean {
-    return super.validate(new InvoiceBankRules(data))
+export class BankValidator extends ClassValidatorFields<BankRules> {
+  validate(data: BankRules): boolean {
+    return super.validate(new BankRules(data))
   }
 }
 
-export class InvoiceBankValidatorFactory {
-  static create(): InvoiceBankValidator {
-    return new InvoiceBankValidator()
+export class BankValidatorFactory {
+  static create(): BankValidator {
+    return new BankValidator()
   }
 }

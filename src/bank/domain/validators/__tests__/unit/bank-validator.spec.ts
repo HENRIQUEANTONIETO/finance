@@ -1,15 +1,11 @@
-import { InvoiceBankDataBuilder } from '@/invoice/domain/testing/helpers/invoice-bank-data-builder'
-import {
-  InvoiceBankRules,
-  InvoiceBankValidator,
-  InvoiceBankValidatorFactory,
-} from '../../invoice-bank.validator'
+import { BankDataBuilder } from '@/bank/domain/testing/helpers/bank-data-builder'
+import { BankRules, BankValidator, BankValidatorFactory } from '../../bank.validator'
 
-const props = InvoiceBankDataBuilder()
-let sut: InvoiceBankValidator
-describe('InvoiceBankEntity validator unit test', () => {
+const props = BankDataBuilder()
+let sut: BankValidator
+describe('BankEntity validator unit test', () => {
   beforeEach(() => {
-    sut = InvoiceBankValidatorFactory.create()
+    sut = BankValidatorFactory.create()
   })
 
   const fieldsRequired = [
@@ -62,15 +58,15 @@ describe('InvoiceBankEntity validator unit test', () => {
     ])
   })
 
-  it('Validation cases for invoice-bank', () => {
+  it('Validation cases for bank', () => {
     let isValid = sut.validate(props)
     expect(isValid).toBeTruthy()
-    expect(sut.validatedData).toStrictEqual(new InvoiceBankRules(props))
+    expect(sut.validatedData).toStrictEqual(new BankRules(props))
 
     isValid = sut.validate({ ...props, typeField: undefined })
     expect(isValid).toBeTruthy()
     expect(sut.validatedData).toStrictEqual(
-      new InvoiceBankRules({
+      new BankRules({
         ...props,
         typeField: undefined,
       }),

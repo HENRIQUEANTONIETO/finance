@@ -13,17 +13,17 @@ describe('InvoiceEntity unit tests', () => {
 
   it('should instance InvoiceEntity', () => {
     expect(InvoiceEntity.validate).toHaveBeenCalled()
-    expect(sut.bank).toBe(invoiceProps.bank)
+    expect(sut.bankId).toBe(invoiceProps.bankId)
     expect(sut.month).toBe(invoiceProps.month)
     expect(sut.year).toBe(invoiceProps.year)
     expect(sut.importedAt).toBe(invoiceProps.importedAt)
     expect(sut.items).toBe(invoiceProps.items)
   })
 
-  it('should return getter of bank field', () => {
-    expect(sut.bank).toBeDefined()
-    expect(sut.bank).toEqual(invoiceProps.bank)
-    expect(typeof sut.bank).toBe('string')
+  it('should return getter of bankId field', () => {
+    expect(sut.bankId).toBeDefined()
+    expect(sut.bankId).toEqual(invoiceProps.bankId)
+    expect(typeof sut.bankId).toBe('string')
   })
 
   it('should return getter of month field', () => {

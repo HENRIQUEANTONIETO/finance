@@ -5,12 +5,12 @@ import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 describe('InvoiceEntity integration tests', () => {
   describe('Constructor method', () => {
     it('Should return an error when the bank is invalid', () => {
-      const invalidBankValues = [null, '', 10, 'a'.repeat(256)]
+      const invalidBankValues = [null, '', 10]
 
       for (const value of invalidBankValues) {
         let props: InvoiceProps = {
           ...InvoiceDataBuilder(),
-          bank: value as any,
+          bankId: value as any,
         }
 
         expect(() => new InvoiceEntity(props)).toThrow(EntityValidationError)

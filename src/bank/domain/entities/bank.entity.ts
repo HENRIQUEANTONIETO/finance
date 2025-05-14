@@ -1,8 +1,8 @@
 import { Entity } from '@/shared/domain/entities/entity'
-import { InvoiceBankValidatorFactory } from '../validators/invoice-bank.validator'
+import { BankValidatorFactory } from '../validators/bank.validator'
 import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
-export type InvoiceBankProps = {
+export type BankProps = {
   name: string
   titleField: string
   categoryField: string
@@ -11,9 +11,9 @@ export type InvoiceBankProps = {
   dateField: string
 }
 
-export class InvoiceBankEntity extends Entity<InvoiceBankProps> {
-  constructor(public readonly props: InvoiceBankProps) {
-    InvoiceBankEntity.validate(props)
+export class BankEntity extends Entity<BankProps> {
+  constructor(public readonly props: BankProps) {
+    BankEntity.validate(props)
     super(props)
   }
 
@@ -41,8 +41,8 @@ export class InvoiceBankEntity extends Entity<InvoiceBankProps> {
     return this.props.dateField
   }
 
-  static validate(props: InvoiceBankProps): void {
-    const validator = InvoiceBankValidatorFactory.create()
+  static validate(props: BankProps): void {
+    const validator = BankValidatorFactory.create()
     const isValid = validator.validate(props)
     if (!isValid) {
       throw new EntityValidationError(validator.errors)
