@@ -7,7 +7,6 @@ import {
   IsOptional,
   IsString,
   Max,
-  MaxLength,
   Min,
   ValidateNested,
 } from 'class-validator'
@@ -18,10 +17,9 @@ import { ClassValidatorFields } from '@/shared/domain/validators/class-validator
 import { InvoiceItemRules } from './invoice-item.validator'
 
 export class InvoiceRules {
-  @MaxLength(255)
-  @IsString()
   @IsNotEmpty()
-  bank: string
+  @IsString()
+  bankId: string
 
   @IsInt()
   @Min(1)
@@ -42,8 +40,8 @@ export class InvoiceRules {
   @Type(() => InvoiceItemRules)
   items: InvoiceItemRules[]
 
-  constructor({ bank, month, year, importedAt, items }: InvoiceProps) {
-    this.bank = bank
+  constructor({ bankId, month, year, importedAt, items }: InvoiceProps) {
+    this.bankId = bankId
     this.month = month
     this.year = year
     this.importedAt = importedAt

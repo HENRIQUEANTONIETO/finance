@@ -11,31 +11,29 @@ describe('InvoiceEntity validator unit test', () => {
   beforeEach(() => {
     sut = InvoiceValidatorFactory.create()
   })
-  it('Invalidation cases for bank field', () => {
-    let isValid = sut.validate({ ...props, bank: '' })
+  it('Invalidation cases for bankId field', () => {
+    let isValid = sut.validate({ ...props, bankId: '' as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bank).toStrictEqual(['bank should not be empty'])
+    expect(sut.errors.bankId).toStrictEqual(['bankId should not be empty'])
 
-    isValid = sut.validate({ ...props, bank: null })
+    isValid = sut.validate({ ...props, bankId: null })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bank).toStrictEqual([
-      'bank should not be empty',
-      'bank must be a string',
-      'bank must be shorter than or equal to 255 characters',
+    expect(sut.errors.bankId).toStrictEqual([
+      'bankId must be a string',
+      'bankId should not be empty',
     ])
 
-    isValid = sut.validate({ ...props, bank: 10 as any })
+    isValid = sut.validate({ ...props, bankId: 10 as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bank).toStrictEqual([
-      'bank must be a string',
-      'bank must be shorter than or equal to 255 characters',
-    ])
+    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
 
-    isValid = sut.validate({ ...props, bank: 'a'.repeat(256) })
+    isValid = sut.validate({ ...props, bankId: [] as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bank).toStrictEqual([
-      'bank must be shorter than or equal to 255 characters',
-    ])
+    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
+
+    isValid = sut.validate({ ...props, bankId: {} as any })
+    expect(isValid).toBeFalsy()
+    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
   })
 
   it('Invalidation cases for month field', () => {
@@ -61,9 +59,7 @@ describe('InvoiceEntity validator unit test', () => {
 
     isValid = sut.validate({ ...props, month: 15 })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.month).toStrictEqual([
-      'month must not be greater than 12',
-    ])
+    expect(sut.errors.month).toStrictEqual(['month must not be greater than 12'])
   })
 
   it('Invalidation cases for year field', () => {
@@ -89,21 +85,15 @@ describe('InvoiceEntity validator unit test', () => {
   it('Invalidation cases for importedAt field', () => {
     let isValid = sut.validate({ ...props, importedAt: '' as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.importedAt).toStrictEqual([
-      'importedAt must be a Date instance',
-    ])
+    expect(sut.errors.importedAt).toStrictEqual(['importedAt must be a Date instance'])
 
     isValid = sut.validate({ ...props, importedAt: 'data' as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.importedAt).toStrictEqual([
-      'importedAt must be a Date instance',
-    ])
+    expect(sut.errors.importedAt).toStrictEqual(['importedAt must be a Date instance'])
 
     isValid = sut.validate({ ...props, importedAt: 10 as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.importedAt).toStrictEqual([
-      'importedAt must be a Date instance',
-    ])
+    expect(sut.errors.importedAt).toStrictEqual(['importedAt must be a Date instance'])
   })
 
   it('Invalidation cases for items field', () => {
