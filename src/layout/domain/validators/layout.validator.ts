@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'
-import { BankProps } from '../entities/bank.entity'
+import { LayoutProps } from '../entities/layout.entity'
 import { ClassValidatorFields } from '@/shared/domain/validators/class-validator-fields'
 
-export class BankRules {
+export class LayoutRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
@@ -40,7 +40,7 @@ export class BankRules {
     dateField,
     titleField,
     typeField,
-  }: BankProps) {
+  }: LayoutProps) {
     Object.assign(this, {
       name,
       amountField,
@@ -52,14 +52,14 @@ export class BankRules {
   }
 }
 
-export class BankValidator extends ClassValidatorFields<BankRules> {
-  validate(data: BankRules): boolean {
-    return super.validate(new BankRules(data))
+export class LayoutValidator extends ClassValidatorFields<LayoutRules> {
+  validate(data: LayoutRules): boolean {
+    return super.validate(new LayoutRules(data))
   }
 }
 
-export class BankValidatorFactory {
-  static create(): BankValidator {
-    return new BankValidator()
+export class LayoutValidatorFactory {
+  static create(): LayoutValidator {
+    return new LayoutValidator()
   }
 }

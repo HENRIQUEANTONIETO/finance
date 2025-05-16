@@ -19,7 +19,7 @@ import { InvoiceItemRules } from './invoice-item.validator'
 export class InvoiceRules {
   @IsNotEmpty()
   @IsString()
-  bankId: string
+  layoutId: string
 
   @IsInt()
   @Min(1)
@@ -40,8 +40,8 @@ export class InvoiceRules {
   @Type(() => InvoiceItemRules)
   items: InvoiceItemRules[]
 
-  constructor({ bankId, month, year, importedAt, items }: InvoiceProps) {
-    this.bankId = bankId
+  constructor({ layoutId, month, year, importedAt, items }: InvoiceProps) {
+    this.layoutId = layoutId
     this.month = month
     this.year = year
     this.importedAt = importedAt

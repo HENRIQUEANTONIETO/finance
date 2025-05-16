@@ -4,13 +4,13 @@ import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
 describe('InvoiceEntity integration tests', () => {
   describe('Constructor method', () => {
-    it('Should return an error when the bank is invalid', () => {
-      const invalidBankValues = [null, '', 10]
+    it('Should return an error when the layout is invalid', () => {
+      const invalidLayoutValues = [null, '', 10]
 
-      for (const value of invalidBankValues) {
+      for (const value of invalidLayoutValues) {
         let props: InvoiceProps = {
           ...InvoiceDataBuilder(),
-          bankId: value as any,
+          layoutId: value as any,
         }
 
         expect(() => new InvoiceEntity(props)).toThrow(EntityValidationError)

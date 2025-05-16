@@ -4,7 +4,7 @@ import { InvoiceValidatorFactory } from '../validators/invoice.validator'
 import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 
 export type InvoiceProps = {
-  bankId: string
+  layoutId: string
   items: InvoiceItemEntity[]
   month: number
   year: number
@@ -17,8 +17,8 @@ export class InvoiceEntity extends Entity<InvoiceProps> {
     this.props.importedAt = this.props.importedAt ?? new Date()
   }
 
-  get bankId(): string {
-    return this.props.bankId
+  get layoutId(): string {
+    return this.props.layoutId
   }
 
   get items(): InvoiceItemEntity[] {

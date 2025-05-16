@@ -1,11 +1,15 @@
-import { BankDataBuilder } from '@/bank/domain/testing/helpers/bank-data-builder'
-import { BankRules, BankValidator, BankValidatorFactory } from '../../bank.validator'
+import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
+import {
+  LayoutRules,
+  LayoutValidator,
+  LayoutValidatorFactory,
+} from '../../layout.validator'
 
-const props = BankDataBuilder()
-let sut: BankValidator
-describe('BankEntity validator unit test', () => {
+const props = LayoutDataBuilder()
+let sut: LayoutValidator
+describe('LayoutEntity validator unit test', () => {
   beforeEach(() => {
-    sut = BankValidatorFactory.create()
+    sut = LayoutValidatorFactory.create()
   })
 
   const fieldsRequired = [
@@ -58,15 +62,15 @@ describe('BankEntity validator unit test', () => {
     ])
   })
 
-  it('Validation cases for bank', () => {
+  it('Validation cases for layout', () => {
     let isValid = sut.validate(props)
     expect(isValid).toBeTruthy()
-    expect(sut.validatedData).toStrictEqual(new BankRules(props))
+    expect(sut.validatedData).toStrictEqual(new LayoutRules(props))
 
     isValid = sut.validate({ ...props, typeField: undefined })
     expect(isValid).toBeTruthy()
     expect(sut.validatedData).toStrictEqual(
-      new BankRules({
+      new LayoutRules({
         ...props,
         typeField: undefined,
       }),

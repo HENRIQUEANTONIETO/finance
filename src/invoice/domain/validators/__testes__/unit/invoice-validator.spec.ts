@@ -11,29 +11,29 @@ describe('InvoiceEntity validator unit test', () => {
   beforeEach(() => {
     sut = InvoiceValidatorFactory.create()
   })
-  it('Invalidation cases for bankId field', () => {
-    let isValid = sut.validate({ ...props, bankId: '' as any })
+  it('Invalidation cases for layoutId field', () => {
+    let isValid = sut.validate({ ...props, layoutId: '' as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bankId).toStrictEqual(['bankId should not be empty'])
+    expect(sut.errors.layoutId).toStrictEqual(['layoutId should not be empty'])
 
-    isValid = sut.validate({ ...props, bankId: null })
+    isValid = sut.validate({ ...props, layoutId: null })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bankId).toStrictEqual([
-      'bankId must be a string',
-      'bankId should not be empty',
+    expect(sut.errors.layoutId).toStrictEqual([
+      'layoutId must be a string',
+      'layoutId should not be empty',
     ])
 
-    isValid = sut.validate({ ...props, bankId: 10 as any })
+    isValid = sut.validate({ ...props, layoutId: 10 as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
+    expect(sut.errors.layoutId).toStrictEqual(['layoutId must be a string'])
 
-    isValid = sut.validate({ ...props, bankId: [] as any })
+    isValid = sut.validate({ ...props, layoutId: [] as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
+    expect(sut.errors.layoutId).toStrictEqual(['layoutId must be a string'])
 
-    isValid = sut.validate({ ...props, bankId: {} as any })
+    isValid = sut.validate({ ...props, layoutId: {} as any })
     expect(isValid).toBeFalsy()
-    expect(sut.errors.bankId).toStrictEqual(['bankId must be a string'])
+    expect(sut.errors.layoutId).toStrictEqual(['layoutId must be a string'])
   })
 
   it('Invalidation cases for month field', () => {

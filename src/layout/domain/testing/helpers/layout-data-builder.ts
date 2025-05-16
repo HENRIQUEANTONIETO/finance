@@ -1,6 +1,6 @@
-import { BankProps } from '../../entities/bank.entity'
+import { LayoutProps } from '../../entities/layout.entity'
 
-export function BankDataBuilder(): BankProps {
+export function LayoutDataBuilder(): LayoutProps {
   return {
     name: 'Inter',
     titleField: 'Lançamento',
