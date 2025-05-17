@@ -1,45 +1,42 @@
 import { Entity } from '../entities/entity'
 import { NotFoundError } from '../errors/not-found-error'
-import { RepositoryInterface } from './repository-contract'
+import { RepositoryInterface } from './repository-contracts'
 
 export abstract class InMemoryRepository<E extends Entity>
   implements RepositoryInterface<E>
 {
-  private _items: E[] = []
+  items: E[] = []
 
   async insert(entity: E): Promise<void> {
-    this._items.push(entity)
-  }
-
-  get items() {
-    return this._items
+    this.items.push(entity)
   }
 
   async findById(id: string): Promise<E> {
-    const index = await this.getIndexById(id)
-    const entity = this._items[index]
-
-    return entity
+    return this._get(id)
   }
 
   async findAll(): Promise<E[]> {
-    return this._items
+    return this.items
   }
 
   async update(entity: E): Promise<void> {
-    const index = await this.getIndexById(entity.id)
-    this._items[index] = entity //Tá diferente da aula
+    await this._get(entity.id)
+    const index = this.items.findIndex(item => item.id === entity.id)
+    this.items[index] = entity
   }
 
   async delete(id: string): Promise<void> {
-    const index = await this.getIndexById(id)
-    this._items.splice(index, 1)
+    await this._get(id)
+    const index = this.items.findIndex(item => item.id === id)
+    this.items.splice(index, 1)
   }
 
-  private async getIndexById(id: string): Promise<number> {
-    const index = this._items.findIndex(i => i.id === id)
-    if (index === -1) throw new NotFoundError('Entity Not Found')
-
-    return index
+  protected async _get(id: string): Promise<E> {
+    const _id = `${id}`
+    const entity = this.items.find(item => item.id === _id)
+    if (!entity) {
+      throw new NotFoundError('Entity not found')
+    }
+    return entity
   }
 }
