@@ -5,7 +5,7 @@ import {
 } from '@/shared/domain/repositories/searchable-repository-contracts'
 import { InvoiceEntity } from '../entities/invoice.entity'
 
-export namespace LayoutRepository {
+export namespace InvoiceRepository {
   export type Filter = string
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
