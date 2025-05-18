@@ -18,5 +18,7 @@ export namespace LayoutRepository {
       Filter,
       SearchParams,
       SearchResult
-    > {}
+    > {
+    layoutExists(name: string): Promise<void>
+  }
 }

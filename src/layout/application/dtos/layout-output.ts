@@ -1,6 +1,7 @@
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 
 export type LayoutOutput = {
+  id: string
   name: string
   titleField: string
   categoryField: string
