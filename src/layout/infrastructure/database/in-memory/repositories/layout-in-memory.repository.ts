@@ -13,7 +13,7 @@ export class LayoutInMemoryRepository
   async layoutExists(name: string): Promise<void> {
     const entity = this.items.find(item => item.name === name)
     if (entity) {
-      throw new ConflictError('Email address already used')
+      throw new ConflictError('Layout name already created')
     }
   }
 
@@ -35,7 +35,7 @@ export class LayoutInMemoryRepository
     sortDir: SortDirection | null,
   ): Promise<LayoutEntity[]> {
     return !sort
-      ? super.applySort(items, 'name', 'desc')
+      ? super.applySort(items, 'name', 'asc')
       : super.applySort(items, sort, sortDir)
   }
 }
