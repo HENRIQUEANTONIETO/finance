@@ -11,11 +11,11 @@ type Props = {
 
 export function LayoutDataBuilder(props?: Props): LayoutProps {
   return {
-    name: props.name ?? 'Inter',
-    titleField: props.titleField ?? 'Lançamento',
-    categoryField: props.categoryField ?? 'Categoria',
-    typeField: props.typeField ?? 'Tipo',
-    amountField: props.amountField ?? 'Valor',
-    dateField: props.dateField ?? 'Data',
+    name: props?.name ?? 'Inter',
+    titleField: props?.titleField ?? 'Lançamento',
+    categoryField: props?.categoryField ?? 'Categoria',
+    typeField: props?.typeField ?? 'Tipo',
+    amountField: props?.amountField ?? 'Valor',
+    dateField: props?.dateField ?? 'Data',
   }
 }
