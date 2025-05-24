@@ -21,6 +21,11 @@ describe('LayoutEntity unit tests', () => {
     expect(sut.typeField).toBe(LayoutProps.typeField)
   })
 
+  it('should return getter of name field', () => {
+    expect(sut.name).toBeDefined()
+    expect(sut.name).toEqual(LayoutProps.name)
+    expect(typeof sut.name).toBe('string')
+  })
   it('should return getter of titleField field', () => {
     expect(sut.titleField).toBeDefined()
     expect(sut.titleField).toEqual(LayoutProps.titleField)
@@ -49,5 +54,31 @@ describe('LayoutEntity unit tests', () => {
     expect(sut.dateField).toBeDefined()
     expect(sut.dateField).toEqual(LayoutProps.dateField)
     expect(typeof sut.dateField).toBe('string')
+  })
+
+  it('should call validate when updating', () => {
+    const spy = jest.spyOn(LayoutEntity, 'validate')
+    const updateProps = { name: 'Updated Name' }
+    sut.update(updateProps)
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining(updateProps))
+    expect(sut.name).toBe('Updated Name')
+  })
+
+  it('should update multiple fields and keep others unchanged', () => {
+    const originalTitle = sut.titleField
+    const updateProps = { name: 'New Name', amountField: 'newAmount' }
+    sut.update(updateProps)
+    expect(sut.name).toBe('New Name')
+    expect(sut.amountField).toBe('newAmount')
+    expect(sut.titleField).toBe(originalTitle)
+  })
+
+  it('should throw if validate fails on update', () => {
+    jest.spyOn(LayoutEntity, 'validate').mockImplementationOnce(() => {
+      throw new Error('Invalid')
+    })
+    expect(() => {
+      sut.update({ name: '' })
+    }).toThrow('Invalid')
   })
 })
