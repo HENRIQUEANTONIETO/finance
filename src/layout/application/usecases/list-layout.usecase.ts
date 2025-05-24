@@ -1,8 +1,6 @@
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
 import { LayoutOutput, LayoutOutputMapper } from '../dtos/layout-output'
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case'
-import { BadRequestError } from '@/shared/application/errors/bad-request-error'
-import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { SearchInput } from '@/shared/application/dtos/search-input'
 import {
   PaginationOutput,
@@ -27,6 +25,7 @@ export namespace ListLayoutUseCase {
       const items = searchResult.items.map(item => {
         return LayoutOutputMapper.toOutput(item)
       })
+
       return PaginationOutputMapper.toOutput(items, searchResult)
     }
   }
