@@ -10,8 +10,8 @@ export class LayoutInMemoryRepository
 {
   sortableFields: string[] = ['name']
 
-  async layoutExists(name: string): Promise<void> {
-    const entity = this.items.find(item => item.name === name)
+  async layoutExists(name: string, id?: string): Promise<void> {
+    const entity = this.items.find(item => item.name === name && item.id !== id)
     if (entity) {
       throw new ConflictError('Layout name already created')
     }
