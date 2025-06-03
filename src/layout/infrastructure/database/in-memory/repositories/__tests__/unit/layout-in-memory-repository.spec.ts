@@ -8,7 +8,7 @@ describe('LayoutInMemoryRepository unit tests', () => {
   beforeEach(() => {
     sut = new LayoutInMemoryRepository()
   })
-  it('Should throw an error when the layout name already exist - layoutExists method', async () => {
+  it('Should throw an error when the layout name already exist without id - layoutExists method', async () => {
     const entity = new LayoutEntity(LayoutDataBuilder())
     await sut.insert(entity)
 
@@ -17,9 +17,23 @@ describe('LayoutInMemoryRepository unit tests', () => {
     )
   })
 
-  it('Should not throw an error when the layout name not exist - layoutExists method', async () => {
+  it('Should throw an error when the layout name already exist with id - layoutExists method', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await sut.insert(entity)
+
+    expect(sut.layoutExists(entity.name, 'fakeId')).rejects.toThrow(
+      new ConflictError('Layout name already created'),
+    )
+  })
+
+  it('Should not throw an error when the layout name not exist withou id - layoutExists method', async () => {
     expect.assertions(0)
     await sut.layoutExists('Inter')
+  })
+
+  it('Should not throw an error when the layout name not exist with id - layoutExists method', async () => {
+    expect.assertions(0)
+    await sut.layoutExists('Inter', 'fakeID')
   })
 
   it('Should no filter items when filter object is null', async () => {
