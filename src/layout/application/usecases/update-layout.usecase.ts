@@ -1,7 +1,7 @@
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
 import { LayoutOutput, LayoutOutputMapper } from '../dtos/layout-output'
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case'
-import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
+import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 
 export namespace UpdateLayoutUseCase {
   export type Input = {
@@ -19,6 +19,12 @@ export namespace UpdateLayoutUseCase {
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(private layoutRepository: LayoutRepository.Repository) {}
     async execute(input: Input): Promise<LayoutOutput> {
+      if (!input.name) {
+        throw new BadRequestError('name not provided')
+      }
+
+      await this.layoutRepository.layoutExists(input.name, input.id)
+
       const entity = await this.layoutRepository.findById(input.id)
       entity.update(input)
 
