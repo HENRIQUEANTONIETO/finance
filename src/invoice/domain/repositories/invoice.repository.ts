@@ -6,7 +6,7 @@ import {
 import { InvoiceEntity } from '../entities/invoice.entity'
 
 export namespace InvoiceRepository {
-  export type Filter = string
+  export type Filter = string | number
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 
