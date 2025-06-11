@@ -26,7 +26,7 @@ describe('DeleteLayoutUseCase unit tests', () => {
 
   it('Should throw an error when entity not found', async () => {
     await expect(sut.execute({ id: 'fakeID' })).rejects.toThrow(
-      new NotFoundError('Entity not found'),
+      new NotFoundError('Entity Layout not found'),
     )
   })
 })

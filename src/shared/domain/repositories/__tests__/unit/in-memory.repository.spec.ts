@@ -26,7 +26,7 @@ describe('InMemoryRepository unit tests', () => {
 
   it('Should throw error when entity not found', async () => {
     await expect(sut.findById('fakeId')).rejects.toThrow(
-      new NotFoundError('Entity not found'),
+      new NotFoundError('Entity Stub not found'),
     )
   })
 
@@ -47,7 +47,7 @@ describe('InMemoryRepository unit tests', () => {
   it('Should throw error on update when entity not found', async () => {
     const entity = new StubEntity({ name: 'test name', price: 50 })
     await expect(sut.update(entity)).rejects.toThrow(
-      new NotFoundError('Entity not found'),
+      new NotFoundError('Entity Stub not found'),
     )
   })
 
@@ -61,7 +61,7 @@ describe('InMemoryRepository unit tests', () => {
 
   it('Should throw error when entity not found', async () => {
     await expect(sut.delete('fakeId')).rejects.toThrow(
-      new NotFoundError('Entity not found'),
+      new NotFoundError('Entity Stub not found'),
     )
   })
 

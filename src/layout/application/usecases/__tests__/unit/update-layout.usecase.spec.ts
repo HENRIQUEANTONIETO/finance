@@ -32,7 +32,7 @@ describe('UpdateLayoutUseCase unit tests', () => {
 
   it('Should throws error when layout not found', async () => {
     await expect(() => sut.execute({ ...props, id: 'fakeId' })).rejects.toThrow(
-      new NotFoundError('Entity not found'),
+      new NotFoundError('Entity Layout not found'),
     )
   })
 
