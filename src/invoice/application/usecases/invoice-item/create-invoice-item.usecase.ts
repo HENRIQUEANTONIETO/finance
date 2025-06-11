@@ -18,11 +18,11 @@ export namespace CreateInvoiceItemUseCase {
   export type Output = InvoiceItemOutput
 
   export class UseCase implements DefaultUseCase<Input, Output> {
-    constructor(private layoutRepository: InvoiceItemRepository.Repository) {}
+    constructor(private invoiceItemRepository: InvoiceItemRepository.Repository) {}
     async execute(input: Input): Promise<InvoiceItemOutput> {
       const entity = new InvoiceItemEntity(input)
 
-      await this.layoutRepository.insert(entity)
+      await this.invoiceItemRepository.insert(entity)
       return InvoiceItemOutputMapper.toOutput(entity)
     }
   }

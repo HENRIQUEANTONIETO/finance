@@ -9,9 +9,9 @@ export namespace DeleteInvoiceItemUseCase {
   export type Output = void
 
   export class UseCase implements DefaultUseCase<Input, Output> {
-    constructor(private layoutRepository: InvoiceItemRepository.Repository) {}
+    constructor(private invoiceItemRepository: InvoiceItemRepository.Repository) {}
     async execute(input: Input): Promise<Output> {
-      await this.layoutRepository.delete(input.id)
+      await this.invoiceItemRepository.delete(input.id)
     }
   }
 }
