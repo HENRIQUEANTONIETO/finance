@@ -1,4 +1,4 @@
-import { parseDateBR } from '../parse-date-br'
+import { parseDateBR } from '../../parse-date-br'
 
 describe('parseDateBR', () => {
   it('should parse a valid BR date string', () => {
