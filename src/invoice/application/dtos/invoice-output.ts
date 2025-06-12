@@ -2,6 +2,7 @@ import { InvoiceItemEntity } from '@/invoice/domain/entities/invoice-item.entity
 import { InvoiceEntity } from '@/invoice/domain/entities/invoice.entity'
 
 export type InvoiceOutput = {
+  id: string
   layoutId: string
   items: InvoiceItemEntity[]
   month: number
