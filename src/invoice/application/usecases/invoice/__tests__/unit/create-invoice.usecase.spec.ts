@@ -79,4 +79,27 @@ describe('CreateInvoiceUseCase unit test', () => {
       ConflictError,
     )
   })
+
+  it('Should create an invoice with same year and invoice id but different month', async () => {
+    const spyInsert = jest.spyOn(repository, 'insert')
+    const items = [
+      {
+        Data: '2024-07-24',
+        Lançamento: 'UBA PETRO LTDA',
+        Categoria: 'TRANSPORTE',
+        Valor: 316.7,
+      },
+    ]
+
+    const invoice = InvoiceDataBuilder({ layoutId: layoutItems[0].id })
+
+    await sut.execute({ ...invoice, items })
+
+    const result = await sut.execute({ ...invoice, month: 5, items })
+    expect(repository.items).toHaveLength(2)
+    expect(repository.items[0].items).toHaveLength(1)
+    expect(repository.items[1].items).toHaveLength(1)
+    expect(result.id).toBeDefined()
+    expect(spyInsert).toHaveBeenCalledTimes(2)
+  })
 })
