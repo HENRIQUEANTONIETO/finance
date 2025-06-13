@@ -13,7 +13,6 @@ export namespace CreateInvoiceUseCase {
     items: any[]
     month: number
     year: number
-    importedAt?: Date
   }
 
   export type Output = InvoiceOutput
