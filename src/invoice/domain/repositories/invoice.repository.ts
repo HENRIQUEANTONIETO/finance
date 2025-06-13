@@ -18,5 +18,7 @@ export namespace InvoiceRepository {
       Filter,
       SearchParams,
       SearchResult
-    > {}
+    > {
+    alreadyImported(month: number, year: number, layoutId: string): Promise<void>
+  }
 }
