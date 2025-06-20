@@ -8,9 +8,10 @@ import { InvoiceOutput, InvoiceOutputMapper } from '../../dtos/invoice-output'
 import { InvoiceRepository } from '@/invoice/domain/repositories/invoice.repository'
 import { type SearchResult } from '@/shared/domain/repositories/searchable-repository-contracts'
 import { type InvoiceEntity } from '@/invoice/domain/entities/invoice.entity'
+import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 
 export namespace ListInvoiceUseCase {
-  export type Input = SearchInput
+  export type Input = Omit<SearchInput, 'filter'> & { year: number }
 
   export type Output = PaginationOutput<InvoiceOutput>
 
@@ -18,7 +19,11 @@ export namespace ListInvoiceUseCase {
     constructor(private layoutRepository: InvoiceRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const params = new InvoiceRepository.SearchParams(input)
+      if (!input?.year) {
+        throw new BadRequestError('year not provided')
+      }
+
+      const params = new InvoiceRepository.SearchParams({ ...input, filter: input.year })
       const searchResult = await this.layoutRepository.search(params)
       return this.toOutput(searchResult)
     }
