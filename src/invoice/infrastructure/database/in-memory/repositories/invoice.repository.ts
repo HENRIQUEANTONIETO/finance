@@ -8,7 +8,7 @@ export class InvoiceInMemoryRepository
   extends InMemorySearchableRepository<InvoiceEntity>
   implements InvoiceRepository.Repository
 {
-  sortableFields: string[] = ['month', 'year']
+  sortableFields: string[] = ['month']
 
   protected async applyFilter(
     items: InvoiceEntity[],
@@ -18,7 +18,7 @@ export class InvoiceInMemoryRepository
       return items
     }
     return items.filter(item => {
-      return item.props.year === filter
+      return item.props.year == filter
     })
   }
 
