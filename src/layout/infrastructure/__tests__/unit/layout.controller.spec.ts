@@ -2,6 +2,10 @@ import { LayoutOutput } from '@/layout/application/dtos/layout-output'
 import { CreateLayoutDto } from '../../dtos/create-layout.dto'
 import { LayoutController } from '../../layout.controller'
 import { UpdateLayoutDto } from '../../dtos/update-layout.dto'
+import { CreateLayoutUseCase } from '@/layout/application/usecases/create-layout.usecase'
+import { UpdateLayoutUseCase } from '@/layout/application/usecases/update-layout.usecase'
+import { ListLayoutUseCase } from '@/layout/application/usecases/list-layout.usecase'
+import { ListLayoutDto } from '../../dtos/list-layout.dto'
 
 describe('LayoutController unit tests', () => {
   let sut: LayoutController
@@ -26,7 +30,7 @@ describe('LayoutController unit tests', () => {
 
   it('Should create a layout', async () => {
     const input: CreateLayoutDto = props
-    const output: LayoutOutput = props
+    const output: CreateLayoutUseCase.Output = props
 
     const mockCreateLayoutUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output)),
@@ -41,7 +45,7 @@ describe('LayoutController unit tests', () => {
   })
 
   it('Should update a layout', async () => {
-    const output: LayoutOutput = props
+    const output: UpdateLayoutUseCase.Output = props
 
     const mockUpdateLayoutUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output)),
@@ -60,5 +64,30 @@ describe('LayoutController unit tests', () => {
       id: props.id,
       ...input,
     })
+  })
+
+  it('Should list layout', async () => {
+    const output: ListLayoutUseCase.Output = {
+      items: [props],
+      total: 1,
+      currentPage: 1,
+      lastPage: 1,
+      perPage: 1,
+    }
+
+    const mockListLayoutUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(output)),
+    }
+
+    sut['listLayoutUseCase'] = mockListLayoutUseCase as any
+
+    const input: ListLayoutDto = {
+      page: 1,
+      perPage: 1,
+    }
+
+    const result = await sut.search(input)
+    expect(output).toStrictEqual(result)
+    expect(mockListLayoutUseCase.execute).toHaveBeenCalledWith(input)
   })
 })
