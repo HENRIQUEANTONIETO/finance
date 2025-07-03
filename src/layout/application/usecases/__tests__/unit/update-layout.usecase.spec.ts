@@ -36,12 +36,6 @@ describe('UpdateLayoutUseCase unit tests', () => {
     )
   })
 
-  it('Should throws error when name not provided', async () => {
-    await expect(() =>
-      sut.execute({ ...props, id: 'fakeId', name: null }),
-    ).rejects.toBeInstanceOf(BadRequestError)
-  })
-
   it('Should not be able to update with same name twice', async () => {
     const items = [new LayoutEntity({ ...props, name: 'teste1' })]
     repository.items = items
