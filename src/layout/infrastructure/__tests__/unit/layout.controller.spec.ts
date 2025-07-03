@@ -6,6 +6,7 @@ import { CreateLayoutUseCase } from '@/layout/application/usecases/create-layout
 import { UpdateLayoutUseCase } from '@/layout/application/usecases/update-layout.usecase'
 import { ListLayoutUseCase } from '@/layout/application/usecases/list-layout.usecase'
 import { ListLayoutDto } from '../../dtos/list-layout.dto'
+import { DeleteLayoutUseCase } from '@/layout/application/usecases/delete.layout.usecase'
 
 describe('LayoutController unit tests', () => {
   let sut: LayoutController
@@ -89,5 +90,22 @@ describe('LayoutController unit tests', () => {
     const result = await sut.search(input)
     expect(output).toStrictEqual(result)
     expect(mockListLayoutUseCase.execute).toHaveBeenCalledWith(input)
+  })
+
+  it('Should delete a layout', async () => {
+    const output = undefined
+
+    const mockDeleteLayoutUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(output)),
+    }
+
+    sut['deleteLayoutUseCase'] = mockDeleteLayoutUseCase as any
+
+    const result = await sut.delete(props.id)
+
+    expect(result).toStrictEqual(output)
+    expect(mockDeleteLayoutUseCase.execute).toHaveBeenCalledWith({
+      id: props.id,
+    })
   })
 })
