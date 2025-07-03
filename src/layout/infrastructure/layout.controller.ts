@@ -46,7 +46,7 @@ export class LayoutController {
     return this.listLayoutUseCase.execute(searchParams)
   }
 
-  @Delete()
+  @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.deleteLayoutUseCase.execute({ id })
   }
