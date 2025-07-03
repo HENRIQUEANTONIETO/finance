@@ -42,5 +42,6 @@ describe('LayoutController unit tests', () => {
     const result = await sut.create(input)
 
     expect(result).toStrictEqual(output)
+    expect(mockCreateLayoutUseCase.execute).toHaveBeenCalledWith(input)
   })
 })
