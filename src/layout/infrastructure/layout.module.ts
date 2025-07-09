@@ -6,13 +6,22 @@ import { LayoutRepository } from '../domain/repositories/layout.repository'
 import { ListLayoutUseCase } from '../application/usecases/list-layout.usecase'
 import { DeleteLayoutUseCase } from '../application/usecases/delete.layout.usecase'
 import { UpdateLayoutUseCase } from '../application/usecases/update-layout.usecase'
+import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
+import { LayoutPrismaRepository } from './database/prisma/repositories/layout-prisma.repository'
 
 @Module({
   controllers: [LayoutController],
   providers: [
     {
+      provide: 'PrismaService',
+      useClass: PrismaService,
+    },
+    {
       provide: 'LayoutRepository',
-      useClass: LayoutInMemoryRepository,
+      // useClass: LayoutInMemoryRepository,
+      useFactory: (prismaService: PrismaService) => {
+        return new LayoutPrismaRepository(prismaService)
+      },
     },
     {
       provide: CreateLayoutUseCase.UseCase,
