@@ -12,9 +12,9 @@ export type LayoutProps = {
 }
 
 export class LayoutEntity extends Entity<LayoutProps> {
-  constructor(public readonly props: LayoutProps) {
+  constructor(public readonly props: LayoutProps, id?: string) {
     LayoutEntity.validate(props)
-    super(props)
+    super(props, id)
   }
 
   get name(): string {
