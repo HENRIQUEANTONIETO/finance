@@ -1,5 +1,6 @@
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
+import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
 
 export class LayoutPrismaRepository implements LayoutRepository.Repository {
@@ -17,7 +18,7 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
     throw new Error('Method not implemented.')
   }
   findById(id: string): Promise<LayoutEntity> {
-    throw new Error('Method not implemented.')
+    return this._get(id)
   }
   findAll(): Promise<LayoutEntity[]> {
     throw new Error('Method not implemented.')
@@ -27,5 +28,17 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
   }
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.')
+  }
+
+  protected async _get(id: string): Promise<LayoutEntity> {
+    try {
+      const layout = await this.prismaService.layout.findUnique({
+        where: { id },
+      })
+
+      return new LayoutEntity(layout, layout.id)
+    } catch {
+      throw new NotFoundError(`Layout not found using ID ${id}`)
+    }
   }
 }
