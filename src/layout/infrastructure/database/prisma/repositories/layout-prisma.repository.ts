@@ -14,8 +14,8 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
   search(props: LayoutRepository.SearchParams): Promise<LayoutRepository.SearchResult> {
     throw new Error('Method not implemented.')
   }
-  insert(entity: LayoutEntity): Promise<void> {
-    throw new Error('Method not implemented.')
+  async insert(entity: LayoutEntity): Promise<void> {
+    await this.prismaService.layout.create({ data: entity })
   }
   findById(id: string): Promise<LayoutEntity> {
     return this._get(id)
