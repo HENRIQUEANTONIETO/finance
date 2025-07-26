@@ -3,6 +3,7 @@ import { LayoutPrismaRepository } from '../../layout-prisma.repository'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { setupPrismaTests } from '../../../testing/setup-prisma-tests'
+import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 
 describe('LayoutPrismaRepository integration tests', () => {
   let sut: LayoutPrismaRepository
@@ -15,6 +16,13 @@ describe('LayoutPrismaRepository integration tests', () => {
     sut = new LayoutPrismaRepository(prismaService as any)
     await prismaService.layout.deleteMany()
   })
+
+  it('should throws error when entity not found', async () => {
+    expect(() => sut.findById('fakeId')).rejects.toThrow(
+      new NotFoundError('Layout not found using ID fakeId'),
+    )
+  })
+
   it('should finds an entity by id', async () => {
     const entity = new LayoutEntity(LayoutDataBuilder())
     const newLayout = await prismaService.layout.create({ data: entity })
