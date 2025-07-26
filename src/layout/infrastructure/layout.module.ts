@@ -4,10 +4,11 @@ import { LayoutInMemoryRepository } from './database/in-memory/repositories/layo
 import { CreateLayoutUseCase } from '../application/usecases/create-layout.usecase'
 import { LayoutRepository } from '../domain/repositories/layout.repository'
 import { ListLayoutUseCase } from '../application/usecases/list-layout.usecase'
-import { DeleteLayoutUseCase } from '../application/usecases/delete.layout.usecase'
+import { DeleteLayoutUseCase } from '../application/usecases/delete-layout.usecase'
 import { UpdateLayoutUseCase } from '../application/usecases/update-layout.usecase'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
 import { LayoutPrismaRepository } from './database/prisma/repositories/layout-prisma.repository'
+import { GetLayoutUseCase } from '../application/usecases/get-layout.usecase'
 
 @Module({
   controllers: [LayoutController],
@@ -34,6 +35,13 @@ import { LayoutPrismaRepository } from './database/prisma/repositories/layout-pr
       provide: ListLayoutUseCase.UseCase,
       useFactory: (layoutRepository: LayoutRepository.Repository) => {
         return new ListLayoutUseCase.UseCase(layoutRepository)
+      },
+      inject: ['LayoutRepository'],
+    },
+    {
+      provide: GetLayoutUseCase.UseCase,
+      useFactory: (layoutRepository: LayoutRepository.Repository) => {
+        return new GetLayoutUseCase.UseCase(layoutRepository)
       },
       inject: ['LayoutRepository'],
     },

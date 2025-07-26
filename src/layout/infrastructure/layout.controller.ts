@@ -12,10 +12,11 @@ import {
 import { CreateLayoutUseCase } from '../application/usecases/create-layout.usecase'
 import { UpdateLayoutUseCase } from '../application/usecases/update-layout.usecase'
 import { ListLayoutUseCase } from '../application/usecases/list-layout.usecase'
-import { DeleteLayoutUseCase } from '../application/usecases/delete.layout.usecase'
+import { DeleteLayoutUseCase } from '../application/usecases/delete-layout.usecase'
 import { CreateLayoutDto } from './dtos/create-layout.dto'
 import { UpdateLayoutDto } from './dtos/update-layout.dto'
 import { ListLayoutDto } from './dtos/list-layout.dto'
+import { GetLayoutUseCase } from '../application/usecases/get-layout.usecase'
 
 @Controller('layout')
 export class LayoutController {
@@ -31,6 +32,9 @@ export class LayoutController {
   @Inject(DeleteLayoutUseCase.UseCase)
   private deleteLayoutUseCase: DeleteLayoutUseCase.UseCase
 
+  @Inject(GetLayoutUseCase.UseCase)
+  private getLayoutUseCase: DeleteLayoutUseCase.UseCase
+
   @Post()
   async create(@Body() createLayoutDto: CreateLayoutDto) {
     return this.createLayoutUseCase.execute(createLayoutDto)
@@ -39,6 +43,11 @@ export class LayoutController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateLayoutDto: UpdateLayoutDto) {
     return this.updateLayoutUseCase.execute({ id, ...updateLayoutDto })
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.getLayoutUseCase.execute({ id })
   }
 
   @Get()
