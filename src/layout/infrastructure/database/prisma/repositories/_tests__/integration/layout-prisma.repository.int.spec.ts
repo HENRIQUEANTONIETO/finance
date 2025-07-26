@@ -22,4 +22,14 @@ describe('LayoutPrismaRepository integration tests', () => {
     const output = await sut.findById(newLayout.id)
     expect(output.toJSON()).toStrictEqual(entity.toJSON())
   })
+
+  it('should insert a new entity', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await sut.insert(entity)
+
+    const result = await prismaService.layout.findUnique({
+      where: { id: entity.id },
+    })
+    expect(result).toStrictEqual(entity.toJSON())
+  })
 })
