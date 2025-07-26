@@ -6,7 +6,7 @@ import { CreateLayoutUseCase } from '@/layout/application/usecases/create-layout
 import { UpdateLayoutUseCase } from '@/layout/application/usecases/update-layout.usecase'
 import { ListLayoutUseCase } from '@/layout/application/usecases/list-layout.usecase'
 import { ListLayoutDto } from '../../dtos/list-layout.dto'
-import { DeleteLayoutUseCase } from '@/layout/application/usecases/delete.layout.usecase'
+import { DeleteLayoutUseCase } from '@/layout/application/usecases/delete-layout.usecase'
 
 describe('LayoutController unit tests', () => {
   let sut: LayoutController

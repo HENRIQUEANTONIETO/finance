@@ -1,5 +1,5 @@
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
-import { DeleteLayoutUseCase } from '../../delete.layout.usecase'
+import { DeleteLayoutUseCase } from '../../delete-layout.usecase'
 import { LayoutInMemoryRepository } from '@/layout/infrastructure/database/in-memory/repositories/layout-in-memory.repository'
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
