@@ -40,4 +40,15 @@ describe('LayoutPrismaRepository integration tests', () => {
     })
     expect(result).toStrictEqual(entity.toJSON())
   })
+
+  it('should find all entities', async () => {
+    const items = [
+      new LayoutEntity(LayoutDataBuilder({ name: 'teste1' })),
+      new LayoutEntity(LayoutDataBuilder({ name: 'teste2' })),
+    ]
+    await prismaService.layout.createMany({ data: items })
+    const output = await sut.findAll()
+    expect(output).toHaveLength(2)
+    expect(output.map(i => i.toJSON())).toStrictEqual(items.map(i => i.toJSON()))
+  })
 })
