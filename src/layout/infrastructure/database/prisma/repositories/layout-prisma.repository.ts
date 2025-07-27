@@ -20,8 +20,9 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
   findById(id: string): Promise<LayoutEntity> {
     return this._get(id)
   }
-  findAll(): Promise<LayoutEntity[]> {
-    throw new Error('Method not implemented.')
+  async findAll(): Promise<LayoutEntity[]> {
+    const models = await this.prismaService.layout.findMany()
+    return models.map(model => new LayoutEntity(model))
   }
   update(entity: LayoutEntity): Promise<void> {
     throw new Error('Method not implemented.')
