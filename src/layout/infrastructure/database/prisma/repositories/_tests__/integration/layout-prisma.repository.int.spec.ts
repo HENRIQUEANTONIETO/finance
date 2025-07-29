@@ -23,7 +23,7 @@ describe('LayoutPrismaRepository integration tests', () => {
     )
   })
 
-  it('should finds an entity by id', async () => {
+  it('should finds a layout by id', async () => {
     const entity = new LayoutEntity(LayoutDataBuilder())
     const newLayout = await prismaService.layout.create({ data: entity })
 
@@ -31,7 +31,7 @@ describe('LayoutPrismaRepository integration tests', () => {
     expect(output.toJSON()).toStrictEqual(entity.toJSON())
   })
 
-  it('should insert a new entity', async () => {
+  it('should insert a new layout', async () => {
     const entity = new LayoutEntity(LayoutDataBuilder())
     await sut.insert(entity)
 
@@ -41,7 +41,7 @@ describe('LayoutPrismaRepository integration tests', () => {
     expect(result).toStrictEqual(entity.toJSON())
   })
 
-  it('should find all entities', async () => {
+  it('should return all layouts', async () => {
     const items = [
       new LayoutEntity(LayoutDataBuilder({ name: 'teste1' })),
       new LayoutEntity(LayoutDataBuilder({ name: 'teste2' })),
