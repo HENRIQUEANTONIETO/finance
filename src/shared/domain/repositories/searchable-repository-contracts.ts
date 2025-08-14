@@ -22,11 +22,11 @@ export type SearchResultProps<E extends Entity, Filter> = {
 }
 
 export class SearchParams<Filter = string> {
-  protected _page: number
-  protected _perPage = 15
-  protected _sort: string | null
-  protected _sortDir: SortDirection | null
-  protected _filter: Filter | null
+  private _page: number
+  private _perPage = 15
+  private _sort: string | null
+  private _sortDir: SortDirection | null
+  private _filter: Filter | null
 
   constructor(props: SearchProps<Filter> = {}) {
     this.page = props.page
@@ -69,8 +69,7 @@ export class SearchParams<Filter = string> {
   }
 
   private set sort(value: string | null) {
-    this._sort =
-      value === null || value === undefined || value === '' ? null : `${value}`
+    this._sort = value === null || value === undefined || value === '' ? null : `${value}`
   }
 
   get sortDir() {
@@ -92,9 +91,7 @@ export class SearchParams<Filter = string> {
 
   private set filter(value: Filter | null) {
     this._filter =
-      value === null || value === undefined || value === ''
-        ? null
-        : (`${value}` as any)
+      value === null || value === undefined || value === '' ? null : (`${value}` as any)
   }
 }
 
