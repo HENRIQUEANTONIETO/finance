@@ -28,8 +28,12 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
     const models = await this.prismaService.layout.findMany()
     return models.map(model => new LayoutEntity(model))
   }
-  update(entity: LayoutEntity): Promise<void> {
-    throw new Error('Method not implemented.')
+  async update(entity: LayoutEntity): Promise<void> {
+    await this._get(entity.id)
+    await this.prismaService.layout.update({
+      data: entity.toJSON(),
+      where: { id: entity.id },
+    })
   }
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.')
