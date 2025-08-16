@@ -52,4 +52,23 @@ describe('LayoutPrismaRepository integration tests', () => {
     expect(output).toHaveLength(2)
     expect(output.map(i => i.toJSON())).toStrictEqual(items.map(i => i.toJSON()))
   })
+
+  it('should throw an error when layout is not found in update method', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await expect(() => sut.update(entity)).rejects.toThrow(
+      new NotFoundError(`Layout not found using ID ${entity.id}`),
+    )
+  })
+
+  it('should update a layout', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: entity.toJSON() })
+
+    entity.update({ name: 'new name' })
+    await sut.update(entity)
+
+    const output = await prismaService.layout.findUnique({ where: { id: entity.id } })
+
+    expect(output.name).toBe('new name')
+  })
 })
