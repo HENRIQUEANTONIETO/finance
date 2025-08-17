@@ -4,7 +4,7 @@ import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-b
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { setupPrismaTests } from '../../../testing/setup-prisma-tests'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
-import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
+import { ConflictError } from '@/shared/domain/errors/conflict-error'
 
 describe('LayoutPrismaRepository integration tests', () => {
   let sut: LayoutPrismaRepository
@@ -70,5 +70,34 @@ describe('LayoutPrismaRepository integration tests', () => {
     const output = await prismaService.layout.findUnique({ where: { id: entity.id } })
 
     expect(output.name).toBe('new name')
+  })
+
+  it('should throw an error when layout is not found in update method', async () => {
+    await expect(() => sut.delete('fakeId')).rejects.toThrow(
+      new NotFoundError(`Layout not found using ID fakeId`),
+    )
+  })
+
+  it('should delete a layout', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: entity.toJSON() })
+
+    await sut.delete(entity.id)
+
+    const output = await prismaService.layout.findUnique({ where: { id: entity.id } })
+    expect(output).toBe(null)
+  })
+
+  it('should throw error when layout name exists', async () => {
+    const entity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: entity.toJSON() })
+    await expect(() => sut.layoutExists(entity.name)).rejects.toThrow(
+      new ConflictError('Layout already exists'),
+    )
+  })
+
+  it('Should not find a layout by name', async () => {
+    expect.assertions(0)
+    await sut.layoutExists('teste')
   })
 })
