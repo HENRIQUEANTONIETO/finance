@@ -1,5 +1,6 @@
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
+import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { SearchResult } from '@/shared/domain/repositories/searchable-repository-contracts'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
@@ -10,8 +11,11 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
 
   constructor(private prismaService: PrismaService) {}
 
-  layoutExists(name: string, id?: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async layoutExists(name: string): Promise<void> {
+    const layout = await this.prismaService.layout.findUnique({ where: { name } })
+    if (layout) {
+      throw new ConflictError('Layout already exists')
+    }
   }
   async search(
     props: LayoutRepository.SearchParams,
@@ -35,8 +39,9 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
       where: { id: entity.id },
     })
   }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(id: string): Promise<void> {
+    await this._get(id)
+    await this.prismaService.layout.delete({ where: { id } })
   }
 
   protected async _get(id: string): Promise<LayoutEntity> {
