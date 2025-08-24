@@ -2,9 +2,7 @@ import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
-import { SearchResult } from '@/shared/domain/repositories/searchable-repository-contracts'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
-import { type Prisma } from '@prisma/client'
 
 export class LayoutPrismaRepository implements LayoutRepository.Repository {
   sortableFields: string[] = ['name']
