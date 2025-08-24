@@ -1,7 +1,6 @@
 import { LayoutPrismaRepository } from '@/layout/infrastructure/database/prisma/repositories/layout-prisma.repository'
 import { CreateLayoutUseCase } from '../../create-layout.usecase'
 import { PrismaClient } from '@prisma/client'
-import { before } from 'node:test'
 
 describe('CreateLayoutUseCase integration test', () => {
   const prismaService = new PrismaClient()
