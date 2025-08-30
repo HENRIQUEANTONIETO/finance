@@ -5,6 +5,7 @@ import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { setupPrismaTests } from '../../../testing/setup-prisma-tests'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
+import { LayoutRepository } from '@/layout/domain/repositories/layout.repository'
 
 describe('LayoutPrismaRepository integration tests', () => {
   let sut: LayoutPrismaRepository
@@ -99,5 +100,74 @@ describe('LayoutPrismaRepository integration tests', () => {
   it('Should not find a layout by name', async () => {
     expect.assertions(0)
     await sut.layoutExists('teste')
+  })
+
+  describe('search method tests', () => {
+    it('should apply only pagination when the other params are null', async () => {
+      const entities: LayoutEntity[] = []
+      const arrange = Array(16).fill(LayoutDataBuilder({}))
+      arrange.forEach((element, index) => {
+        entities.push(
+          new LayoutEntity({
+            ...element,
+            name: `test${index}`,
+          }),
+        )
+      })
+
+      await prismaService.layout.createMany({
+        data: entities.map(item => item.toJSON()),
+      })
+
+      const searchOutput = await sut.search(new LayoutRepository.SearchParams())
+
+      expect(searchOutput).toBeInstanceOf(LayoutRepository.SearchResult)
+      expect(searchOutput.total).toBe(16)
+      expect(searchOutput.items.length).toBe(15)
+      searchOutput.items.forEach(item => {
+        expect(item).toBeInstanceOf(LayoutEntity)
+      })
+    })
+
+    it('should search using filter, sort and paginate', async () => {
+      const entities: LayoutEntity[] = []
+      const arrange = ['test', 'a', 'TEST', 'b', 'TeSt']
+      arrange.forEach((element, index) => {
+        entities.push(
+          new LayoutEntity({
+            ...LayoutDataBuilder({ name: element }),
+          }),
+        )
+      })
+
+      await prismaService.layout.createMany({
+        data: entities.map(item => item.toJSON()),
+      })
+
+      const searchOutputPage1 = await sut.search(
+        new LayoutRepository.SearchParams({
+          page: 1,
+          perPage: 2,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: 'TEST',
+        }),
+      )
+
+      expect(searchOutputPage1.items[0].toJSON()).toMatchObject(entities[0].toJSON())
+      expect(searchOutputPage1.items[1].toJSON()).toMatchObject(entities[4].toJSON())
+
+      const searchOutputPage2 = await sut.search(
+        new LayoutRepository.SearchParams({
+          page: 2,
+          perPage: 2,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: 'TEST',
+        }),
+      )
+
+      expect(searchOutputPage2.items[0].toJSON()).toMatchObject(entities[2].toJSON())
+    })
   })
 })
