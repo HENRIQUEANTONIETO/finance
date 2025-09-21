@@ -33,7 +33,7 @@ export class LayoutController {
   private deleteLayoutUseCase: DeleteLayoutUseCase.UseCase
 
   @Inject(GetLayoutUseCase.UseCase)
-  private getLayoutUseCase: DeleteLayoutUseCase.UseCase
+  private getLayoutUseCase: GetLayoutUseCase.UseCase
 
   @Post()
   async create(@Body() createLayoutDto: CreateLayoutDto) {
