@@ -21,7 +21,6 @@ export class LayoutPrismaRepository implements LayoutRepository.Repository {
     const sortable = this.sortableFields?.includes(props.sort) || false
     const orderByField = sortable ? props.sort : 'name'
     const orderByDir = sortable ? props.sortDir : 'asc'
-
     const count = await this.prismaService.layout.count({
       ...(props.filter && {
         where: {
