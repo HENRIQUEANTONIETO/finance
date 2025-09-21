@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { LayoutController } from './layout.controller'
-import { LayoutInMemoryRepository } from './database/in-memory/repositories/layout-in-memory.repository'
 import { CreateLayoutUseCase } from '../application/usecases/create-layout.usecase'
 import { LayoutRepository } from '../domain/repositories/layout.repository'
 import { ListLayoutUseCase } from '../application/usecases/list-layout.usecase'
@@ -23,6 +22,7 @@ import { GetLayoutUseCase } from '../application/usecases/get-layout.usecase'
       useFactory: (prismaService: PrismaService) => {
         return new LayoutPrismaRepository(prismaService)
       },
+      inject: ['PrismaService'],
     },
     {
       provide: CreateLayoutUseCase.UseCase,
