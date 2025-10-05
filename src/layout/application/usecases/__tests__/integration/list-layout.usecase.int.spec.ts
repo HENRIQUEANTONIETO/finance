@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { ListLayoutUseCase } from '../../list-layout.usecase'
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
-import { setupPrismaTests } from '@/layout/infrastructure/database/prisma/testing/setup-prisma-tests'
+import { setupPrismaTests } from '@/shared/infrastructure/database/prisma/testing/setup-prisma-tests'
 
 describe('ListLayoutsUseCase integration tests', () => {
   const prismaService = new PrismaClient()
