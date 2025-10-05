@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -15,13 +8,39 @@ datasource db {
 }
 
 model Layout {
-  id            String @id @db.Uuid
-  name          String @unique @db.VarChar(255)
-  titleField    String @db.VarChar(255)
-  categoryField String @db.VarChar(255)
-  typeField     String @db.VarChar(255)
-  amountField   String @db.VarChar(255)
-  dateField     String @db.VarChar(255)
+  id            String    @id @db.Uuid
+  name          String    @unique @db.VarChar(255)
+  titleField    String    @db.VarChar(255)
+  categoryField String    @db.VarChar(255)
+  typeField     String    @db.VarChar(255)
+  amountField   String    @db.VarChar(255)
+  dateField     String    @db.VarChar(255)
+  invoices      Invoice[]
 
   @@map("layouts")
+}
+
+model Invoice {
+  id         String        @id @db.Uuid
+  layoutId   String        @db.Uuid
+  layout     Layout        @relation(fields: [layoutId], references: [id])
+  items      InvoiceItem[]
+  month      Int
+  year       Int
+  importedAt DateTime
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id        String   @id @db.Uuid
+  title     String   @db.VarChar(255)
+  category  String   @db.VarChar(255)
+  type      String   @db.VarChar(255)
+  amount    Decimal  @db.Money()
+  date      DateTime
+  Invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  invoiceId String   @db.Uuid
+
+  @@map("invoices_items")
 }
