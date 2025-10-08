@@ -9,7 +9,7 @@ export function InvoiceDataBuilder(overrides: Partial<InvoiceProps> = {}): Invoi
   ]
 
   return {
-    layoutId: '1',
+    layoutId: '92c4903b-59a3-4dfe-b217-08c312471f85',
     items: defaultItems,
     month: 4,
     year: 2025,

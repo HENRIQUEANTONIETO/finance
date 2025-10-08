@@ -1,5 +1,6 @@
 import { InvoiceEntity } from '@/invoice/domain/entities/invoice.entity'
 import { InvoiceRepository } from '@/invoice/domain/repositories/invoice.repository'
+import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
 
@@ -21,6 +22,12 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
     throw new Error('Method not implemented.')
   }
   async insert(entity: InvoiceEntity): Promise<void> {
+    const layoutExists = await this.prismaService.layout.findUnique({
+      where: { id: entity.layoutId },
+    })
+
+    if (!layoutExists) throw new BadRequestError('Layout informado não existe')
+
     await this.prismaService.invoice.create({
       data: {
         ...entity.toJSON(),
