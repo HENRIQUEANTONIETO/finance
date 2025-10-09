@@ -6,6 +6,7 @@ import { setupPrismaTests } from '@/shared/infrastructure/database/prisma/testin
 import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
+import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 
 describe('InvoicePrismaRepository integration tests', () => {
   let sut: InvoicePrismaRepository
@@ -19,6 +20,40 @@ describe('InvoicePrismaRepository integration tests', () => {
     await prismaService.invoiceItem.deleteMany()
     await prismaService.invoice.deleteMany()
     await prismaService.layout.deleteMany()
+  })
+
+  it('should throws error when entity not found', async () => {
+    expect(() => sut.findById('fakeId')).rejects.toThrow(
+      new NotFoundError('Invoice not found using ID fakeId'),
+    )
+  })
+
+  it('should find an invoice by id', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+    const entity = new InvoiceEntity({
+      ...InvoiceDataBuilder(),
+      layoutId: layoutEntity.id,
+    })
+
+    await prismaService.invoice.create({
+      data: {
+        ...entity.toJSON(),
+        items: {
+          create: entity.items.map(item => item.toJSON()),
+        },
+      },
+    })
+
+    const result = await sut.findById(entity.id)
+
+    expect(result.toJSON()).toEqual({
+      ...entity.toJSON(),
+      items: entity.items.map(i => ({
+        ...i.toJSON(),
+        invoiceId: entity.id,
+      })),
+    })
   })
 
   it('should throw an error if layoutId does not exist when inserting a new invoice', async () => {

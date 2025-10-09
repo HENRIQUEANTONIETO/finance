@@ -4,6 +4,7 @@ import { InvoiceRepository } from '@/invoice/domain/repositories/invoice.reposit
 import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
+import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 
 export class InvoicePrismaRepository implements InvoiceRepository.Repository {
   constructor(private prismaService: PrismaService) {}
@@ -19,9 +20,11 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
       throw new ConflictError('Invoice has already imported')
     }
   }
+
   search(props: InvoiceRepository.SearchParams): Promise<InvoiceRepository.SearchResult> {
     throw new Error('Method not implemented.')
   }
+
   async insert(entity: InvoiceEntity): Promise<void> {
     const layoutExists = await this.prismaService.layout.findUnique({
       where: { id: entity.layoutId },
@@ -38,28 +41,37 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
       },
     })
   }
+
   async findById(id: string): Promise<InvoiceEntity> {
-    const model = await this.prismaService.invoice.findUnique({
-      where: { id },
-      include: { items: true },
-    })
-
-    if (!model) return null
-
-    const { items, ...invoice } = model
-    const invoiceItems = items.map(
-      item => new InvoiceItemEntity({ ...item, amount: Number(item.amount) }),
-    )
-    const invoiceEntity = new InvoiceEntity({ ...invoice, items: invoiceItems })
-    return invoiceEntity
+    return await this._get(id)
   }
+
   findAll(): Promise<InvoiceEntity[]> {
     throw new Error('Method not implemented.')
   }
+
   update(entity: InvoiceEntity): Promise<void> {
     throw new Error('Method not implemented.')
   }
+
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.')
+  }
+
+  protected async _get(id: string): Promise<InvoiceEntity> {
+    try {
+      const invoice = await this.prismaService.invoice.findUnique({
+        where: { id },
+        include: { items: true },
+      })
+
+      const invoiceItemEntity: InvoiceItemEntity[] = invoice.items.map(
+        i => new InvoiceItemEntity({ ...i, amount: Number(i.amount) }),
+      )
+
+      return new InvoiceEntity({ ...invoice, items: invoiceItemEntity })
+    } catch {
+      throw new NotFoundError(`Invoice not found using ID ${id}`)
+    }
   }
 }
