@@ -4,6 +4,8 @@ import { InvoiceEntity } from '@/invoice/domain/entities/invoice.entity'
 import { InvoiceDataBuilder } from '@/invoice/domain/testing/helpers/invoice-data-builder'
 import { setupPrismaTests } from '@/shared/infrastructure/database/prisma/testing/setup-prisma-tests'
 import { BadRequestError } from '@/shared/application/errors/bad-request-error'
+import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
+import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
 
 describe('InvoicePrismaRepository integration tests', () => {
   let sut: InvoicePrismaRepository
@@ -14,6 +16,8 @@ describe('InvoicePrismaRepository integration tests', () => {
 
   beforeEach(async () => {
     sut = new InvoicePrismaRepository(prismaService as any)
+    await prismaService.invoiceItem.deleteMany()
+    await prismaService.invoice.deleteMany()
     await prismaService.layout.deleteMany()
   })
 
@@ -24,13 +28,25 @@ describe('InvoicePrismaRepository integration tests', () => {
     )
   })
 
-  // it('should inserting a new invoice', async () => {
-  //   const entity = new InvoiceEntity(InvoiceDataBuilder())
-  //   await sut.insert(entity)
-  //   const result = await prismaService.invoice.findUnique({ where: { id: entity.id } })
+  it('should insert a new invoice', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+    const entity = new InvoiceEntity({
+      ...InvoiceDataBuilder(),
+      layoutId: layoutEntity.id,
+    })
 
-  //   expect(result).toStrictEqual(entity.toJSON())
-  // })
+    await sut.insert(entity)
+    const result = await sut.findById(entity.id)
+
+    expect(result.toJSON()).toEqual({
+      ...entity.toJSON(),
+      items: entity.items.map(i => ({
+        ...i.toJSON(),
+        invoiceId: entity.id,
+      })),
+    })
+  })
 
   // it('should throw error when Invoice already imported', async () => {
   //   const entity = new InvoiceEntity(InvoiceDataBuilder())

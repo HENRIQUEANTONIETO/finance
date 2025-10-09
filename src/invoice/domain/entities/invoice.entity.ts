@@ -47,6 +47,12 @@ export class InvoiceEntity extends Entity<InvoiceProps> {
     this.props.year = value
   }
 
+  toJSON(): Required<{ id: string } & InvoiceProps> {
+    const json = super.toJSON()
+    json.items = this.props.items.map(item => item.toJSON() as any)
+    return json
+  }
+
   getTotal() {
     return this.items.reduce((acc, item) => acc + item.amount, 0)
   }

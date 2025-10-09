@@ -1,4 +1,5 @@
 import { InvoiceEntity } from '@/invoice/domain/entities/invoice.entity'
+import { InvoiceItemEntity } from '@/invoice/domain/entities/invoice-item.entity'
 import { InvoiceRepository } from '@/invoice/domain/repositories/invoice.repository'
 import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
@@ -37,8 +38,20 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
       },
     })
   }
-  findById(id: string): Promise<InvoiceEntity> {
-    throw new Error('Method not implemented.')
+  async findById(id: string): Promise<InvoiceEntity> {
+    const model = await this.prismaService.invoice.findUnique({
+      where: { id },
+      include: { items: true },
+    })
+
+    if (!model) return null
+
+    const { items, ...invoice } = model
+    const invoiceItems = items.map(
+      item => new InvoiceItemEntity({ ...item, amount: Number(item.amount) }),
+    )
+    const invoiceEntity = new InvoiceEntity({ ...invoice, items: invoiceItems })
+    return invoiceEntity
   }
   findAll(): Promise<InvoiceEntity[]> {
     throw new Error('Method not implemented.')

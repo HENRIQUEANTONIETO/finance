@@ -8,6 +8,7 @@ export type InvoiceItemProps = {
   type?: string
   amount: number
   date: Date
+  invoiceId?: string
 }
 export class InvoiceItemEntity extends Entity<InvoiceItemProps> {
   constructor(public readonly props: InvoiceItemProps) {
