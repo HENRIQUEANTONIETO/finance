@@ -7,6 +7,7 @@ import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
+import { ConflictError } from '@/shared/domain/errors/conflict-error'
 
 describe('InvoicePrismaRepository integration tests', () => {
   let sut: InvoicePrismaRepository
@@ -83,16 +84,30 @@ describe('InvoicePrismaRepository integration tests', () => {
     })
   })
 
-  // it('should throw error when Invoice already imported', async () => {
-  //   const entity = new InvoiceEntity(InvoiceDataBuilder())
-  //   await prismaService.invoice.create({ data: { ...entity.toJSON() } })
-  //   await expect(() => sut.invoiceExists(entity.name)).rejects.toThrow(
-  //     new ConflictError('Layout already exists'),
-  //   )
-  // })
+  it('should throw error when Invoice already imported', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+    const entity = new InvoiceEntity({
+      ...InvoiceDataBuilder(),
+      layoutId: layoutEntity.id,
+    })
 
-  // it('Should not find a invoice by name', async () => {
-  //   expect.assertions(0)
-  //   await sut.invoiceExists('teste')
-  // })
+    await prismaService.invoice.create({
+      data: {
+        ...entity.toJSON(),
+        items: {
+          create: entity.items.map(item => item.toJSON()),
+        },
+      },
+    })
+
+    await expect(() =>
+      sut.alreadyImported(entity.month, entity.year, entity.layoutId),
+    ).rejects.toThrow(new ConflictError('Invoice has already imported'))
+  })
+
+  it('Should not find an invoice already imported', async () => {
+    expect.assertions(0)
+    await sut.alreadyImported(1, 2025, '92c4903b-59a3-4dfe-b217-08c312471f85')
+  })
 })
