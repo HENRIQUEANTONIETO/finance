@@ -110,4 +110,33 @@ describe('InvoicePrismaRepository integration tests', () => {
     expect.assertions(0)
     await sut.alreadyImported(1, 2025, '92c4903b-59a3-4dfe-b217-08c312471f85')
   })
+
+  it('Should return all invoices', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+
+    const invoices = Array.from(
+      { length: 11 },
+      (_, i) =>
+        new InvoiceEntity({
+          ...InvoiceDataBuilder(),
+          month: i + 1,
+          layoutId: layoutEntity.id,
+        }),
+    )
+
+    await Promise.all(
+      invoices.map(e =>
+        prismaService.invoice.create({
+          data: {
+            ...e.toJSON(),
+            items: { create: e.items.map(item => item.toJSON()) },
+          },
+        }),
+      ),
+    )
+
+    const result = await sut.findAll()
+    expect(result.length).toBe(invoices.length)
+  })
 })
