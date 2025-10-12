@@ -139,4 +139,38 @@ describe('InvoicePrismaRepository integration tests', () => {
     const result = await sut.findAll()
     expect(result.length).toBe(invoices.length)
   })
+
+  it('Should throw an error when updating an nonexistent invoice', async () => {
+    const entity = new InvoiceEntity(InvoiceDataBuilder())
+    await expect(() => sut.update(entity)).rejects.toThrow(
+      new NotFoundError('Invoice not found using ID ' + entity.id),
+    )
+  })
+
+  it('Should update an invoice', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+    const entity = new InvoiceEntity({
+      ...InvoiceDataBuilder(),
+      layoutId: layoutEntity.id,
+    })
+
+    await prismaService.invoice.create({
+      data: {
+        ...entity.toJSON(),
+        items: {
+          create: entity.items.map(item => item.toJSON()),
+        },
+      },
+    })
+
+    entity.month = 2
+    entity.year = 2026
+    await sut.update(entity)
+
+    const output = await prismaService.invoice.findUnique({ where: { id: entity.id } })
+
+    expect(output.month).toBe(2)
+    expect(output.year).toBe(2026)
+  })
 })
