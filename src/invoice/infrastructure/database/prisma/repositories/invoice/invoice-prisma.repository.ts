@@ -46,8 +46,20 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
     return await this._get(id)
   }
 
-  findAll(): Promise<InvoiceEntity[]> {
-    throw new Error('Method not implemented.')
+  async findAll(): Promise<InvoiceEntity[]> {
+    const invoices = await this.prismaService.invoice.findMany({
+      include: { items: true },
+    })
+
+    return invoices.map(
+      i =>
+        new InvoiceEntity({
+          ...i,
+          items: i.items.map(
+            item => new InvoiceItemEntity({ ...item, amount: Number(item.amount) }),
+          ),
+        }),
+    )
   }
 
   update(entity: InvoiceEntity): Promise<void> {
