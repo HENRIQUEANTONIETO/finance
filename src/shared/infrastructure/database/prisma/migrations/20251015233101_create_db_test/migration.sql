@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "public"."layouts" (
+CREATE TABLE "test"."layouts" (
     "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "titleField" VARCHAR(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE "public"."layouts" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."invoices" (
+CREATE TABLE "test"."invoices" (
     "id" UUID NOT NULL,
     "layoutId" UUID NOT NULL,
     "month" INTEGER NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "public"."invoices" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."invoices_items" (
+CREATE TABLE "test"."invoices_items" (
     "id" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "category" VARCHAR(255) NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE "public"."invoices_items" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "layouts_name_key" ON "public"."layouts"("name");
+CREATE UNIQUE INDEX "layouts_name_key" ON "test"."layouts"("name");
 
 -- AddForeignKey
-ALTER TABLE "public"."invoices" ADD CONSTRAINT "invoices_layoutId_fkey" FOREIGN KEY ("layoutId") REFERENCES "public"."layouts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "test"."invoices" ADD CONSTRAINT "invoices_layoutId_fkey" FOREIGN KEY ("layoutId") REFERENCES "test"."layouts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."invoices_items" ADD CONSTRAINT "invoices_items_invoiceId_fkey" FOREIGN KEY ("invoiceId") REFERENCES "public"."invoices"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "test"."invoices_items" ADD CONSTRAINT "invoices_items_invoiceId_fkey" FOREIGN KEY ("invoiceId") REFERENCES "test"."invoices"("id") ON DELETE CASCADE ON UPDATE CASCADE;
