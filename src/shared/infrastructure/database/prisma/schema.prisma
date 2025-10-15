@@ -39,7 +39,7 @@ model InvoiceItem {
   type      String   @db.VarChar(255)
   amount    Decimal  @db.Money()
   date      DateTime
-  Invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  Invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId String   @db.Uuid
 
   @@map("invoices_items")
