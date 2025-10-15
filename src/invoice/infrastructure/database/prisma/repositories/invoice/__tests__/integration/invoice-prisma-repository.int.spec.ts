@@ -8,12 +8,18 @@ import { LayoutEntity } from '@/layout/domain/entities/layout.entity'
 import { LayoutDataBuilder } from '@/layout/domain/testing/helpers/layout-data-builder'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
+import { Test, TestingModule } from '@nestjs/testing'
+import { DatabaseModule } from '@/shared/infrastructure/database/database.module'
 
 describe('InvoicePrismaRepository integration tests', () => {
   let sut: InvoicePrismaRepository
+  let module: TestingModule
   const prismaService = new PrismaClient()
-  beforeAll(() => {
+  beforeAll(async () => {
     setupPrismaTests()
+    module = await Test.createTestingModule({
+      imports: [DatabaseModule.forTest(prismaService)],
+    }).compile()
   })
 
   beforeEach(async () => {
@@ -172,5 +178,29 @@ describe('InvoicePrismaRepository integration tests', () => {
 
     expect(output.month).toBe(2)
     expect(output.year).toBe(2026)
+  })
+
+  it('Should delete an invoice', async () => {
+    const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+    await prismaService.layout.create({ data: layoutEntity })
+    const entity = new InvoiceEntity({
+      ...InvoiceDataBuilder(),
+      layoutId: layoutEntity.id,
+    })
+
+    await prismaService.invoice.create({
+      data: {
+        ...entity.toJSON(),
+        items: {
+          create: entity.items.map(item => item.toJSON()),
+        },
+      },
+    })
+
+    await sut.delete(entity.id)
+
+    const output = await prismaService.invoice.findUnique({ where: { id: entity.id } })
+
+    expect(output).toBe(null)
   })
 })
