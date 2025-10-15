@@ -20,9 +20,13 @@
     "test:e2e": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.e2e.config.ts",
     "prisma:generate": "dotenv -e .env -- npx prisma generate --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
     "prisma:generate:dev": "dotenv -e .env.development -- npx prisma generate --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
+    "prisma:generate:test": "dotenv -e .env.test -- npx prisma generate --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
     "prisma:migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
+    "prisma:migrate:test": "dotenv -e .env.test -- npx prisma migrate dev --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
     "prisma:migrate:reset:dev": "dotenv -e .env.development -- npx prisma migrate reset --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
-    "prisma:studio:dev": "dotenv -e .env.development -- npx prisma studio --schema=./src/shared/infrastructure/database/prisma/schema.prisma"
+    "prisma:migrate:reset:test": "dotenv -e .env.test -- npx prisma migrate reset --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
+    "prisma:studio:dev": "dotenv -e .env.development -- npx prisma studio --schema=./src/shared/infrastructure/database/prisma/schema.prisma",
+    "prisma:studio:test": "dotenv -e .env.test -- npx prisma studio --schema=./src/shared/infrastructure/database/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
