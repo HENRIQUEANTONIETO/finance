@@ -10,6 +10,7 @@ import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { Test, TestingModule } from '@nestjs/testing'
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module'
+import { InvoiceRepository } from '@/invoice/domain/repositories/invoice.repository'
 
 describe('InvoicePrismaRepository integration tests', () => {
   let sut: InvoicePrismaRepository
@@ -202,5 +203,97 @@ describe('InvoicePrismaRepository integration tests', () => {
     const output = await prismaService.invoice.findUnique({ where: { id: entity.id } })
 
     expect(output).toBe(null)
+  })
+
+  describe('search method tests', () => {
+    it('should apply pagination when the other params are null', async () => {
+      const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+      await prismaService.layout.create({ data: layoutEntity })
+
+      const invoices = Array.from(
+        { length: 12 },
+        (_, i) =>
+          new InvoiceEntity({
+            ...InvoiceDataBuilder(),
+            month: i + 1,
+            layoutId: layoutEntity.id,
+          }),
+      )
+
+      await Promise.all(
+        invoices.map(e =>
+          prismaService.invoice.create({
+            data: {
+              ...e.toJSON(),
+              items: { create: e.items.map(item => item.toJSON()) },
+            },
+          }),
+        ),
+      )
+
+      const searchOutput = await sut.search(new InvoiceRepository.SearchParams())
+
+      expect(searchOutput).toBeInstanceOf(InvoiceRepository.SearchResult)
+      expect(searchOutput.total).toBe(12)
+      expect(searchOutput.items.length).toBe(12)
+      searchOutput.items.forEach(item => {
+        expect(item).toBeInstanceOf(InvoiceEntity)
+      })
+    })
+
+    it('should search using filter, sort and paginate', async () => {
+      const layoutEntity = new LayoutEntity(LayoutDataBuilder())
+      await prismaService.layout.create({ data: layoutEntity })
+
+      const invoices = Array.from(
+        { length: 12 },
+        (_, i) =>
+          new InvoiceEntity({
+            ...InvoiceDataBuilder(),
+            month: i + 1,
+            layoutId: layoutEntity.id,
+          }),
+      )
+
+      await Promise.all(
+        invoices.map(e =>
+          prismaService.invoice.create({
+            data: {
+              ...e.toJSON(),
+              items: { create: e.items.map(item => item.toJSON()) },
+            },
+          }),
+        ),
+      )
+
+      const searchOutputPage1 = await sut.search(
+        new InvoiceRepository.SearchParams({
+          page: 1,
+          perPage: 2,
+          sort: 'month',
+          sortDir: 'desc',
+          filter: '2025',
+        }),
+      )
+
+      expect(searchOutputPage1.items[0].toJSON()).toMatchObject(
+        invoices[invoices.length - 1].toJSON(),
+      )
+      expect(searchOutputPage1.items[1].toJSON()).toMatchObject(
+        invoices[invoices.length - 2].toJSON(),
+      )
+
+      const searchOutputPage2 = await sut.search(
+        new InvoiceRepository.SearchParams({
+          page: 2,
+          perPage: 2,
+          sort: 'month',
+          sortDir: 'desc',
+          filter: '2025',
+        }),
+      )
+
+      expect(searchOutputPage2.items[0].toJSON()).toMatchObject(invoices[9].toJSON())
+    })
   })
 })
