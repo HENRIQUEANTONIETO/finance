@@ -21,8 +21,55 @@ export class InvoicePrismaRepository implements InvoiceRepository.Repository {
     }
   }
 
-  search(props: InvoiceRepository.SearchParams): Promise<InvoiceRepository.SearchResult> {
-    throw new Error('Method not implemented.')
+  async search(
+    props: InvoiceRepository.SearchParams,
+  ): Promise<InvoiceRepository.SearchResult> {
+    const sortable = this.sortableFields?.includes(props.sort) || false
+    const orderByField = sortable ? props.sort : 'month'
+    const orderByDir = sortable ? props.sortDir : 'desc'
+    const count = await this.prismaService.invoice.count({
+      ...(props.filter && {
+        where: {
+          year: {
+            equals: Number(props.filter),
+          },
+        },
+      }),
+    })
+
+    const models = await this.prismaService.invoice.findMany({
+      ...(props.filter && {
+        where: {
+          year: {
+            equals: Number(props.filter),
+          },
+        },
+      }),
+      orderBy: {
+        [orderByField]: orderByDir,
+      },
+      skip: props.page && props.page > 0 ? (props.page - 1) * props.perPage : 1,
+      take: props.perPage && props.perPage > 0 ? props.perPage : 15,
+      include: { items: true },
+    })
+
+    return new InvoiceRepository.SearchResult({
+      items: models.map(
+        model =>
+          new InvoiceEntity({
+            ...model,
+            items: model.items.map(
+              i => new InvoiceItemEntity({ ...i, amount: Number(i.amount) }),
+            ),
+          }),
+      ),
+      total: count,
+      currentPage: props.page,
+      perPage: props.perPage,
+      sort: orderByField,
+      sortDir: orderByDir,
+      filter: props.filter,
+    })
   }
 
   async insert(entity: InvoiceEntity): Promise<void> {
